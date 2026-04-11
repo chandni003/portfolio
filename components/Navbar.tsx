@@ -13,7 +13,7 @@ import { cn } from "../lib/utils";
 
 type NavItem = {
   name: string;
-  href: string;
+  href?: string;
   icon: any;
   subItems?: { name: string; href: string; icon: any }[];
 };
@@ -23,11 +23,10 @@ const navItems: NavItem[] = [
   { name: "About", href: "/about", icon: User },
   {
     name: "Experience",
-    href: "/experience",
     icon: Briefcase,
     subItems: [
-      { name: "Work History", href: "/experience#work", icon: Briefcase },
-      { name: "Education History", href: "/experience#education", icon: GraduationCap }
+      { name: "Work History", href: "/experience/work", icon: Briefcase },
+      { name: "Education History", href: "/experience/education", icon: GraduationCap }
     ]
   },
   { name: "Services", href: "/services", icon: Settings },
@@ -53,14 +52,24 @@ const Navbar = () => {
       <div className="hidden md:flex items-center gap-8 px-8 py-3 bg-white/10 dark:bg-black/20 backdrop-blur-md border border-white/20 dark:border-white/10 rounded-full shadow-2xl transition-all duration-300">
         {navItems.map((item) => (
           <div key={item.name} className="relative group/navItem">
-            <Link
-              href={item.href}
-              className="flex items-center gap-2 text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white transition-all group"
-            >
-              <item.icon size={16} className="group-hover:scale-110 transition-transform" />
-              <span>{item.name}</span>
-              {item.subItems && <ChevronDown size={14} className="opacity-50 group-hover/navItem:rotate-180 transition-transform" />}
-            </Link>
+            {item.href ? (
+              <Link
+                href={item.href}
+                className="flex items-center gap-2 text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white transition-all group cursor-pointer"
+              >
+                <item.icon size={16} className="group-hover:scale-110 transition-transform" />
+                <span>{item.name}</span>
+                {item.subItems && <ChevronDown size={14} className="opacity-50 group-hover/navItem:rotate-180 transition-transform" />}
+              </Link>
+            ) : (
+              <div
+                className="flex items-center gap-2 text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white transition-all group cursor-pointer"
+              >
+                <item.icon size={16} className="group-hover:scale-110 transition-transform" />
+                <span>{item.name}</span>
+                {item.subItems && <ChevronDown size={14} className="opacity-50 group-hover/navItem:rotate-180 transition-transform" />}
+              </div>
+            )}
 
             {/* Desktop Dropdown */}
             {item.subItems && (
@@ -130,14 +139,21 @@ const Navbar = () => {
             <div className="flex flex-col gap-6">
               {navItems.map((item) => (
                 <div key={item.name} className="flex flex-col gap-4">
-                  <Link
-                    href={item.href}
-                    onClick={() => setIsOpen(false)}
-                    className="flex items-center gap-4 text-xl font-medium text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white transition-colors"
-                  >
-                    <item.icon size={24} />
-                    {item.name}
-                  </Link>
+                  {item.href ? (
+                    <Link
+                      href={item.href}
+                      onClick={() => setIsOpen(false)}
+                      className="flex items-center gap-4 text-xl font-medium text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white transition-colors"
+                    >
+                      <item.icon size={24} />
+                      {item.name}
+                    </Link>
+                  ) : (
+                    <div className="flex items-center gap-4 text-xl font-medium text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white transition-colors cursor-pointer">
+                      <item.icon size={24} />
+                      {item.name}
+                    </div>
+                  )}
                   {item.subItems && (
                     <div className="flex flex-col gap-3 pl-10 border-l border-neutral-200 dark:border-neutral-800 ml-3">
                       {item.subItems.map(subItem => (

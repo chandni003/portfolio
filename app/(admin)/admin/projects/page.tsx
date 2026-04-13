@@ -158,9 +158,21 @@ export default function ProjectsManager() {
                         </div>
                     )}
                 </div>
-                <div className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-neutral-400">
-                    <div className={`w-1.5 h-1.5 rounded-full ${project.status === "live" ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500'}`} />
-                    {project.status || "In Review"}
+                <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest">
+                    <div className={`w-1.5 h-1.5 rounded-full ${
+                      project.status === "live" ? 'bg-emerald-500 animate-pulse' : 
+                      project.status === "coming_soon" ? 'bg-blue-500' : 
+                      'bg-amber-500'
+                    }`} />
+                    <span className={
+                      project.status === "live" ? 'text-emerald-600' : 
+                      project.status === "coming_soon" ? 'text-blue-600' : 
+                      'text-amber-600'
+                    }>
+                      {project.status === "live" ? "Live" : 
+                       project.status === "coming_soon" ? "Coming Soon" : 
+                       "In Review"}
+                    </span>
                 </div>
               </div>
             </motion.div>
@@ -171,7 +183,7 @@ export default function ProjectsManager() {
       {/* Modal */}
       <AnimatePresence>
         {isModalOpen && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <div className="fixed inset-0 z-[100] flex items-end md:items-center justify-center p-0 md:p-4">
             <motion.div 
                 initial={{ opacity: 0 }} 
                 animate={{ opacity: 1 }} 
@@ -180,52 +192,67 @@ export default function ProjectsManager() {
                 className="absolute inset-0 bg-black/60 backdrop-blur-md" 
             />
             <motion.div
-              initial={{ scale: 0.9, opacity: 0, y: 20 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.9, opacity: 0, y: 20 }}
-              className="relative w-full max-w-2xl bg-white dark:bg-[#0a0a0a] border border-neutral-200 dark:border-neutral-800 rounded-[48px] shadow-2xl p-10 overflow-hidden"
+              initial={{ y: "100%", opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: "100%", opacity: 0 }}
+              className="relative w-full max-w-lg bg-white dark:bg-[#0a0a0a] border-t md:border border-neutral-200 dark:border-neutral-800 rounded-t-[40px] md:rounded-[48px] shadow-2xl p-6 md:p-10 max-h-[90vh] overflow-y-auto"
             >
-              <h2 className="text-3xl font-black dark:text-white uppercase tracking-tighter mb-2">
+              <h2 className="text-2xl md:text-3xl font-black dark:text-white uppercase tracking-tighter mb-1">
                 {currentProject ? "Edit Project" : "New Project"}
               </h2>
-              <p className="text-neutral-500 dark:text-neutral-400 font-medium text-sm mb-10">
-                Specify the technical details of your work.
+              <p className="text-neutral-500 dark:text-neutral-400 font-medium text-xs md:text-sm mb-8">
+                Configure your project details and status.
               </p>
 
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-2 gap-6">
-                  <div className="space-y-2">
+              <form onSubmit={handleSubmit} className="space-y-5 pb-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-1.5">
                     <label className="text-[10px] font-black text-neutral-400 uppercase tracking-widest ml-1">Title</label>
-                    <input name="title" defaultValue={currentProject?.title} required className="w-full px-6 py-4 rounded-2xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 focus:border-blue-500 outline-none transition-all text-sm font-bold dark:text-white" />
+                    <input name="title" defaultValue={currentProject?.title} required className="w-full px-5 py-3.5 rounded-2xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 focus:border-blue-500 outline-none transition-all text-sm font-bold dark:text-white" />
                   </div>
-                  <div className="space-y-2">
+                  <div className="space-y-1.5">
                     <label className="text-[10px] font-black text-neutral-400 uppercase tracking-widest ml-1">Category</label>
-                    <input name="category" defaultValue={currentProject?.category} placeholder="Full Stack, AI, UI/UX" className="w-full px-6 py-4 rounded-2xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 focus:border-blue-500 outline-none transition-all text-sm font-bold dark:text-white" />
+                    <input name="category" defaultValue={currentProject?.category} placeholder="Full Stack, AI..." className="w-full px-5 py-3.5 rounded-2xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 focus:border-blue-500 outline-none transition-all text-sm font-bold dark:text-white" />
                   </div>
                 </div>
 
-                <div className="space-y-2">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-black text-neutral-400 uppercase tracking-widest ml-1">Status</label>
+                    <select name="status" defaultValue={currentProject?.status || "live"} className="w-full px-5 py-3.5 rounded-2xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 focus:border-blue-500 outline-none transition-all text-sm font-bold dark:text-white">
+                      <option value="live">Completed / Live</option>
+                      <option value="coming_soon">Coming Soon</option>
+                      <option value="in_review">In Review</option>
+                    </select>
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-black text-neutral-400 uppercase tracking-widest ml-1">Image URL</label>
+                    <input name="image" defaultValue={currentProject?.image} placeholder="https://..." className="w-full px-5 py-3.5 rounded-2xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 focus:border-blue-500 outline-none transition-all text-sm font-bold dark:text-white" />
+                  </div>
+                </div>
+
+                <div className="space-y-1.5">
                   <label className="text-[10px] font-black text-neutral-400 uppercase tracking-widest ml-1">Description</label>
-                  <textarea name="description" defaultValue={currentProject?.description} required rows={3} className="w-full px-6 py-4 rounded-2xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 focus:border-blue-500 outline-none transition-all text-sm font-bold dark:text-white resize-none" />
+                  <textarea name="description" defaultValue={currentProject?.description} required rows={2} className="w-full px-5 py-3.5 rounded-2xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 focus:border-blue-500 outline-none transition-all text-sm font-bold dark:text-white resize-none" />
                 </div>
 
-                <div className="grid grid-cols-2 gap-6">
-                    <div className="space-y-2">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-1.5">
                       <label className="text-[10px] font-black text-neutral-400 uppercase tracking-widest ml-1">Live URL</label>
-                      <input name="liveLink" defaultValue={currentProject?.liveLink} className="w-full px-6 py-4 rounded-2xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 focus:border-blue-500 outline-none transition-all text-sm font-bold dark:text-white" />
+                      <input name="liveLink" defaultValue={currentProject?.liveLink} className="w-full px-5 py-3.5 rounded-2xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 focus:border-blue-500 outline-none transition-all text-sm font-bold dark:text-white" />
                     </div>
-                    <div className="space-y-2">
+                    <div className="space-y-1.5">
                       <label className="text-[10px] font-black text-neutral-400 uppercase tracking-widest ml-1">GitHub URL</label>
-                      <input name="githubLink" defaultValue={currentProject?.githubLink} className="w-full px-6 py-4 rounded-2xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 focus:border-blue-500 outline-none transition-all text-sm font-bold dark:text-white" />
+                      <input name="githubLink" defaultValue={currentProject?.githubLink} className="w-full px-5 py-3.5 rounded-2xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 focus:border-blue-500 outline-none transition-all text-sm font-bold dark:text-white" />
                     </div>
                 </div>
 
-                <div className="space-y-2">
+                <div className="space-y-1.5">
                   <label className="text-[10px] font-black text-neutral-400 uppercase tracking-widest ml-1">Tags (Comma separated)</label>
-                  <input name="tags" defaultValue={currentProject?.tags?.join(", ")} placeholder="React, Next.js, Firebase" className="w-full px-6 py-4 rounded-2xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 focus:border-blue-500 outline-none transition-all text-sm font-bold dark:text-white" />
+                  <input name="tags" defaultValue={currentProject?.tags?.join(", ")} placeholder="React, Next.js, Firebase" className="w-full px-5 py-3.5 rounded-2xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 focus:border-blue-500 outline-none transition-all text-sm font-bold dark:text-white" />
                 </div>
 
-                <button type="submit" className="w-full py-5 bg-blue-600 text-white rounded-2xl font-black text-sm uppercase tracking-widest shadow-xl shadow-blue-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all">
+                <button type="submit" className="w-full py-5 bg-blue-600 text-white rounded-[24px] font-black text-xs uppercase tracking-widest shadow-xl shadow-blue-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all">
                   {currentProject ? "Save Changes" : "Create Project"}
                 </button>
               </form>

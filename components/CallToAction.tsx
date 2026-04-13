@@ -9,7 +9,7 @@ import { usePathname } from 'next/navigation';
 export const CallToAction = () => {
     const pathname = usePathname();
 
-    if (pathname === '/contact') {
+    if (pathname === '/contact' || pathname === '/contact/') {
         return null;
     }
 
@@ -35,7 +35,7 @@ export const CallToAction = () => {
                         </p>
 
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
-                            <Link href="#contact" className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3.5 bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-semibold rounded-xl transition-colors shadow-lg shadow-blue-500/20">
+                            <Link href="" className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3.5 bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-semibold rounded-xl transition-colors shadow-lg shadow-blue-500/20">
                                 <PhoneCall className="w-[18px] h-[18px]" />
                                 Schedule a Call
                             </Link>
@@ -45,7 +45,7 @@ export const CallToAction = () => {
                                 Email Me
                             </Link>
 
-                            <Link href="#contact" className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3.5 bg-transparent hover:bg-white/5 border border-white/10 text-gray-300 font-semibold rounded-xl transition-colors">
+                            <Link href="/contact" className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3.5 bg-transparent hover:bg-white/5 border border-white/10 text-gray-300 font-semibold rounded-xl transition-colors">
                                 <Calendar className="w-[18px] h-[18px]" />
                                 Book Meeting
                             </Link>

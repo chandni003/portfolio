@@ -12,32 +12,34 @@ export const TopBar = () => {
     const [showNotifications, setShowNotifications] = useState(false);
 
     return (
-        <header className="h-20 w-full bg-white/50 dark:bg-black/20 backdrop-blur-xl border-b border-neutral-200 dark:border-neutral-800 flex items-center justify-between px-8 relative z-50">
+        <div className="flex items-center justify-between flex-1 pl-4 md:pl-0">
             <div className="flex items-center gap-12">
-                <Logo className="scale-75" />
-                <div className="relative group hidden md:block">
+                <div className="md:hidden">
+                    <Logo className="scale-75" />
+                </div>
+                <div className="relative group hidden lg:block">
                     <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400 group-focus-within:text-blue-600 transition-colors" size={18} />
                     <input 
                         type="text" 
                         placeholder="Quick search..." 
-                        className="pl-12 pr-6 py-2.5 bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-full text-sm outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all w-64 dark:text-white"
+                        className="pl-12 pr-6 py-2.5 bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-full text-sm outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all w-48 xl:w-64 dark:text-white"
                     />
                 </div>
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 md:gap-4">
                 {/* Notification Bell */}
                 <div className="relative">
                     <button 
                         onClick={() => setShowNotifications(!showNotifications)}
-                        className="p-3 rounded-2xl bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-neutral-500 hover:text-blue-600 hover:border-blue-500 shadow-sm transition-all relative overflow-hidden group"
+                        className="p-2.5 md:p-3 rounded-2xl bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-neutral-500 hover:text-blue-600 hover:border-blue-500 shadow-sm transition-all relative overflow-hidden group"
                     >
-                        <Bell size={20} />
-                        <span className="absolute top-3 right-3 w-2 h-2 bg-blue-600 rounded-full border-2 border-white dark:border-black animate-pulse" />
+                        <Bell size={20} className="w-[18px] md:w-[20px] h-[18px] md:h-[20px]" />
+                        <span className="absolute top-2.5 right-2.5 md:top-3 md:right-3 w-2 h-2 bg-blue-600 rounded-full border-2 border-white dark:border-black animate-pulse" />
                     </button>
 
                     {showNotifications && (
-                        <div className="absolute top-16 right-0 w-80 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-3xl shadow-2xl p-4 overflow-hidden animate-in fade-in zoom-in duration-200">
+                        <div className="absolute top-16 right-[-80px] md:right-0 w-72 md:w-80 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-3xl shadow-2xl p-4 overflow-hidden animate-in fade-in zoom-in duration-200">
                             <h4 className="text-xs font-black uppercase tracking-widest text-neutral-400 mb-4 px-2">Recent Notifications</h4>
                             <div className="space-y-2">
                                 {notifications.map(notif => (
@@ -54,18 +56,18 @@ export const TopBar = () => {
                     )}
                 </div>
 
-                <div className="flex items-center gap-3 pl-4 border-l border-neutral-200 dark:border-neutral-800">
+                <div className="flex items-center gap-3 pl-2 md:pl-4 border-l border-neutral-200 dark:border-neutral-800">
                     <div className="text-right hidden sm:block">
-                        <p className="text-sm font-black dark:text-white leading-none">Admin</p>
-                        <p className="text-[10px] text-neutral-400 font-bold uppercase tracking-widest mt-1">Superuser</p>
+                        <p className="text-xs md:text-sm font-black dark:text-white leading-none">Admin</p>
+                        <p className="text-[8px] md:text-[10px] text-neutral-400 font-bold uppercase tracking-widest mt-1">Superuser</p>
                     </div>
-                    <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 p-[1px]">
-                        <div className="w-full h-full rounded-[15px] bg-white dark:bg-black flex items-center justify-center text-blue-600">
-                            <User size={20} />
+                    <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl md:rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 p-[1px]">
+                        <div className="w-full h-full rounded-[11px] md:rounded-[15px] bg-white dark:bg-black flex items-center justify-center text-blue-600">
+                            <User size={20} className="w-[16px] md:w-[20px] h-[16px] md:h-[20px]" />
                         </div>
                     </div>
                 </div>
             </div>
-        </header>
+        </div>
     );
 };

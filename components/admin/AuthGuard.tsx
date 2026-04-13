@@ -11,12 +11,12 @@ export const AuthGuard = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (!loading) {
-      const isLoginPage = pathname === "/admin";
+      const isLoginPage = pathname === "/admin" || pathname === "/admin/";
       
       if (!user || role !== "admin") {
         // Not logged in or not an admin
         if (!isLoginPage) {
-          router.push("/admin");
+          router.push("/admin/") ;
         }
       } else {
         // Logged in as admin
@@ -42,7 +42,7 @@ export const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   // 1. It's the login page and we're NOT logged in as admin
   // 2. It's NOT the login page and we ARE logged in as admin
   
-  const isLoginPage = pathname === "/admin";
+  const isLoginPage = pathname === "/admin" || pathname === "/admin/";
   const isAuthorized = user && role === "admin";
 
   if (isLoginPage && !isAuthorized) return <>{children}</>;

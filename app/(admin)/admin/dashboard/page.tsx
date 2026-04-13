@@ -1,21 +1,7 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { 
-  BarChart, 
-  Bar, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
-  ResponsiveContainer,
-  AreaChart,
-  Area,
-  Cell,
-  PieChart,
-  Pie
-} from "recharts";
 import { 
   Briefcase, 
   Users, 
@@ -24,9 +10,20 @@ import {
   TrendingUp,
   ArrowUpRight,
   ArrowDownRight,
-  MessageSquare
+  MessageSquare,
+  Cpu
 } from "lucide-react";
 import { useTheme } from "next-themes";
+import { subscribeToCollection, COLLECTIONS } from "../../../../lib/firestore";
+import { 
+  AreaChart, 
+  Area, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip, 
+  ResponsiveContainer 
+} from "recharts";
 
 const visitorData = [
   { name: "Mon", visitors: 400 },
@@ -38,16 +35,51 @@ const visitorData = [
   { name: "Sun", visitors: 800 },
 ];
 
-const projectStats = [
-  { label: "Total Projects", value: "15", icon: Briefcase, color: "text-blue-500", trend: "+12%", up: true },
-  { label: "In Progress", value: "3", icon: Clock, color: "text-amber-500", trend: "+1", up: true },
-  { label: "Live Apps", value: "12", icon: CheckCircle2, color: "text-emerald-500", trend: "0%", up: null },
-  { label: "Total Visitors", value: "4.2k", icon: Users, color: "text-purple-500", trend: "+18%", up: true },
-];
-
 export default function DashboardPage() {
   const { theme } = useTheme();
   const isDark = theme === "dark";
+  
+  const [stats, setStats] = useState({
+    projects: 0,
+    skills: 0,
+    unreadInquiries: 0,
+    pendingMeetings: 0,
+    totalVisitors: "4.2k"
+  });
+  const [recentInquiries, setRecentInquiries] = useState<any[]>([]);
+
+  useEffect(() => {
+    const unsubProjects = subscribeToCollection(COLLECTIONS.PROJECTS, (data) => {
+      setStats(prev => ({ ...prev, projects: data.length }));
+    });
+    const unsubSkills = subscribeToCollection(COLLECTIONS.SKILLS, (data) => {
+      setStats(prev => ({ ...prev, skills: data.length }));
+    });
+    const unsubInquiries = subscribeToCollection(COLLECTIONS.INQUIRIES, (data) => {
+      const unread = data.filter(i => !i.read).length;
+      setStats(prev => ({ ...prev, unreadInquiries: unread }));
+      const sorted = [...data].sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
+      setRecentInquiries(sorted.slice(0, 3));
+    });
+    const unsubMeetings = subscribeToCollection(COLLECTIONS.MEETINGS, (data) => {
+      const pending = data.filter(m => m.status === "pending").length;
+      setStats(prev => ({ ...prev, pendingMeetings: pending }));
+    });
+
+    return () => {
+      unsubProjects();
+      unsubSkills();
+      unsubInquiries();
+      unsubMeetings();
+    };
+  }, []);
+
+  const projectStats = [
+    { label: "Total Projects", value: stats.projects.toString(), icon: Briefcase, color: "text-blue-500", trend: "+12%", up: true },
+    { label: "Technical Skills", value: stats.skills.toString(), icon: Cpu, color: "text-amber-500", trend: "+2", up: true },
+    { label: "New Messages", value: stats.unreadInquiries.toString(), icon: MessageSquare, color: "text-emerald-500", trend: stats.unreadInquiries > 0 ? "Action Required" : "Clean", up: stats.unreadInquiries > 0 ? false : null },
+    { label: "Pending Meetings", value: stats.pendingMeetings.toString(), icon: Users, color: "text-purple-500", trend: stats.pendingMeetings > 0 ? "Needs Action" : "Clear", up: stats.pendingMeetings > 0 ? false : null },
+  ];
 
   return (
     <div className="space-y-8 pb-12">
@@ -172,28 +204,31 @@ export default function DashboardPage() {
         >
              <h3 className="text-xl font-black dark:text-white uppercase tracking-tighter mb-8">Recent Queries</h3>
              <div className="space-y-6 flex-1">
-                {[
-                    { name: "John Doe", email: "john@example.com", status: "Unprocessed", color: "bg-blue-500" },
-                    { name: "Sarah Smith", email: "sarah@design.co", status: "Scheduled", color: "bg-purple-500" },
-                    { name: "Mike Ross", email: "mike@law.com", status: "Urgent", color: "bg-red-500" },
-                ].map((item, i) => (
-                    <div key={i} className="flex items-center gap-4 p-4 rounded-3xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-100 dark:border-neutral-800 group hover:border-blue-500/50 transition-all">
-                        <div className={`w-10 h-10 rounded-2xl ${item.color}/10 flex items-center justify-center text-[10px] font-black text-neutral-400 group-hover:scale-110 transition-transform`}>
-                            {item.name[0]}
+                {recentInquiries.length === 0 ? (
+                    <div className="h-full flex flex-col items-center justify-center text-center opacity-40">
+                        <MessageSquare size={40} className="mb-4" />
+                        <p className="text-xs font-bold uppercase tracking-widest">No Recent Queries</p>
+                    </div>
+                ) : recentInquiries.map((item, i) => (
+                    <div key={item.id} className="flex items-center gap-4 p-4 rounded-3xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-100 dark:border-neutral-800 group hover:border-blue-500/50 transition-all">
+                        <div className={`w-10 h-10 rounded-2xl bg-blue-500/10 flex items-center justify-center text-[10px] font-black text-blue-600 group-hover:scale-110 transition-transform`}>
+                            {item.name?.[0] || 'U'}
                         </div>
                         <div className="flex-1 min-w-0">
                             <p className="text-sm font-black dark:text-white truncate uppercase tracking-tight">{item.name}</p>
                             <p className="text-[10px] text-neutral-500 font-bold truncate">{item.email}</p>
                         </div>
-                        <div className={`px-3 py-1 ${item.color}/10 rounded-full text-[8px] font-black uppercase tracking-widest text-neutral-600 dark:text-neutral-300`}>
-                            {item.status}
-                        </div>
+                        {!item.read && (
+                            <div className={`px-3 py-1 bg-blue-500/10 rounded-full text-[8px] font-black uppercase tracking-widest text-blue-600`}>
+                                New
+                            </div>
+                        )}
                     </div>
                 ))}
              </div>
-             <button className="w-full mt-10 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-blue-600 hover:bg-blue-600/5 rounded-2xl border border-blue-600/20 transition-all">
+             <a href="/admin/contacts" className="w-full mt-10 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-blue-600 hover:bg-blue-600/5 rounded-2xl border border-blue-600/20 transition-all text-center block">
                 View All Messages
-             </button>
+             </a>
         </motion.div>
       </div>
 
@@ -243,10 +278,10 @@ export default function DashboardPage() {
                 </div>
                 <div className="pt-10">
                     <p className="text-white/60 text-xs font-bold uppercase tracking-widest mb-4 leading-relaxed">
-                        Currently processing 12 active modules <br /> with 99.9% uptime index.
+                        Currently monitoring your digital portfolio <br /> with 100% cloud sync efficiency.
                     </p>
                     <button className="px-8 py-3 bg-white text-blue-600 rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl hover:scale-105 active:scale-95 transition-all">
-                        Check Infrastructure
+                        Infrastructure Status
                     </button>
                 </div>
             </div>

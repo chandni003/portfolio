@@ -20,6 +20,8 @@ export const COLLECTIONS = {
   SCHEDULES: "schedules",
   ANALYTICS: "analytics",
   EXPERIENCE: "experience",
+  RESUME_DOWNLOADS: "resume_downloads",
+  RESUME_META: "resume_meta",
 };
 
 // Generic Fetch All
@@ -31,10 +33,22 @@ export const getAllDocuments = async (collectionName: string) => {
 // Real-time Subscribe
 export const subscribeToCollection = (collectionName: string, callback: (data: any[]) => void) => {
   const q = query(collection(db, collectionName), orderBy("createdAt", "desc"));
-  return onSnapshot(q, (snapshot) => {
-    const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    callback(data);
-  });
+  const unsubscribe = onSnapshot(q, 
+    (snapshot) => {
+      const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      callback(data);
+    },
+    (error) => {
+      // Fallback: query without ordering if index is missing
+      console.warn(`subscribeToCollection fallback for "${collectionName}":`, error.message);
+      const fallbackQ = query(collection(db, collectionName));
+      onSnapshot(fallbackQ, (snapshot) => {
+        const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        callback(data);
+      });
+    }
+  );
+  return unsubscribe;
 };
 
 // Generic CRUD
@@ -71,4 +85,12 @@ export const addSkill = async (skillData: any) => {
 // Contact Form
 export const submitInquiry = async (inquiryData: any) => {
   return await addDocument(COLLECTIONS.INQUIRIES, inquiryData);
+};
+
+// Resume Download Tracking
+export const trackResumeDownload = async (downloaderInfo: { userAgent?: string; referrer?: string }) => {
+  return await addDocument(COLLECTIONS.RESUME_DOWNLOADS, {
+    ...downloaderInfo,
+    downloadedAt: new Date(),
+  });
 };

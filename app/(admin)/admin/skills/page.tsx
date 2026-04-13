@@ -10,6 +10,20 @@ export default function SkillsManager() {
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentSkill, setCurrentSkill] = useState<any>(null);
+  const [iconPreview, setIconPreview] = useState<string>("Cpu");
+
+  const LOCAL_LOGOS = [
+    { name: "React", icon: "react.svg" },
+    { name: "Node.js", icon: "nodejs.svg" },
+    { name: "Python", icon: "python.svg" },
+    { name: "Next.js", icon: "nextjs.svg" },
+    { name: "MongoDB", icon: "mongodb.svg" },
+    { name: "JavaScript", icon: "javascript.svg" },
+    { name: "TypeScript", icon: "typescript.svg" },
+    { name: "Tailwind", icon: "tailwind.svg" },
+  ];
+
+  const LUCIDE_ICONS = ["Cpu", "Code", "Zap", "Database", "Globe", "Layout", "Server", "Activity"];
 
   useEffect(() => {
     fetchSkills();
@@ -33,7 +47,7 @@ export default function SkillsManager() {
       name: formData.get("name"),
       category: formData.get("category"),
       level: Number(formData.get("level")),
-      icon: formData.get("icon") || "Cpu",
+      icon: iconPreview,
     };
 
     try {
@@ -60,20 +74,28 @@ export default function SkillsManager() {
     }
   };
 
+  const renderIcon = (icon: string, size = 24) => {
+    if (icon?.includes(".") || icon?.startsWith("http")) {
+      const src = icon.includes(".") && !icon.startsWith("http") ? `/logos/skills/${icon}` : icon;
+      return <img src={src} className={`w-${size/4} h-${size/4} object-contain`} alt="icon" />;
+    }
+    return <Cpu size={size} />;
+  };
+
   return (
-    <div className="space-y-8">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div className="space-y-8 p-4 md:p-0 overflow-x-hidden">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-          <h1 className="text-3xl font-black dark:text-white uppercase tracking-tighter">
+          <h1 className="text-2xl md:text-3xl font-black dark:text-white uppercase tracking-tighter">
             Skills <span className="text-blue-600">Inventory</span>
           </h1>
-          <p className="text-neutral-500 dark:text-neutral-400 font-medium text-sm mt-1">
+          <p className="text-neutral-500 dark:text-neutral-400 font-medium text-xs md:text-sm mt-1">
             Manage your technical stack and proficiency levels.
           </p>
         </div>
         <button
-          onClick={() => { setCurrentSkill(null); setIsModalOpen(true); }}
-          className="flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-2xl font-black text-xs uppercase tracking-widest shadow-lg shadow-blue-500/20 hover:scale-105 active:scale-95 transition-all"
+          onClick={() => { setCurrentSkill(null); setIconPreview("Cpu"); setIsModalOpen(true); }}
+          className="w-full md:w-auto flex items-center justify-center gap-2 px-6 py-4 md:py-3 bg-blue-600 text-white rounded-2xl font-black text-xs uppercase tracking-widest shadow-lg shadow-blue-500/20 hover:scale-105 active:scale-95 transition-all"
         >
           <Plus size={18} />
           Add Skill
@@ -81,7 +103,7 @@ export default function SkillsManager() {
       </div>
 
       {/* Skills Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
         {loading ? (
           Array.from({ length: 4 }).map((_, i) => (
             <div key={i} className="h-48 rounded-[32px] bg-neutral-100 dark:bg-neutral-900 animate-pulse" />
@@ -97,10 +119,10 @@ export default function SkillsManager() {
             >
               <div className="flex items-center justify-between mb-6">
                 <div className="p-3 rounded-2xl bg-blue-500/10 text-blue-600 group-hover:scale-110 transition-transform">
-                  <Cpu size={24} />
+                  {renderIcon(skill.icon)}
                 </div>
-                <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <button onClick={() => { setCurrentSkill(skill); setIsModalOpen(true); }} className="p-2 hover:text-blue-600 transition-colors">
+                <div className="flex gap-1 md:opacity-0 group-hover:opacity-100 transition-opacity">
+                  <button onClick={() => { setCurrentSkill(skill); setIconPreview(skill.icon); setIsModalOpen(true); }} className="p-2 hover:text-blue-600 transition-colors">
                     <Edit2 size={16} />
                   </button>
                   <button onClick={() => handleDelete(skill.id)} className="p-2 hover:text-red-500 transition-colors">
@@ -109,7 +131,7 @@ export default function SkillsManager() {
                 </div>
               </div>
 
-              <h3 className="text-xl font-black dark:text-white uppercase tracking-tighter mb-4">{skill.name}</h3>
+              <h3 className="text-lg md:text-xl font-black dark:text-white uppercase tracking-tighter mb-4">{skill.name}</h3>
 
               <div className="space-y-2">
                 <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-neutral-400">
@@ -136,27 +158,27 @@ export default function SkillsManager() {
       {/* Modal */}
       <AnimatePresence>
         {isModalOpen && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <div className="fixed inset-0 z-[100] flex items-end md:items-center justify-center p-0 md:p-4">
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsModalOpen(false)} className="absolute inset-0 bg-black/60 backdrop-blur-md" />
             <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="relative w-full max-w-md bg-white dark:bg-[#0a0a0a] border border-neutral-200 dark:border-neutral-800 rounded-[40px] shadow-2xl p-8"
+              initial={{ y: "100%", opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: "100%", opacity: 0 }}
+              className="relative w-full max-w-lg bg-white dark:bg-[#0a0a0a] border-t md:border border-neutral-200 dark:border-neutral-800 rounded-t-[40px] md:rounded-[40px] shadow-2xl p-6 md:p-10 max-h-[90vh] overflow-y-auto"
             >
               <h2 className="text-2xl font-black dark:text-white uppercase tracking-tighter mb-6">
                 {currentSkill ? "Edit Skill" : "Add New Skill"}
               </h2>
 
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-6 pb-6">
                 <div className="space-y-2">
                   <label className="text-[10px] font-black text-neutral-400 uppercase tracking-widest ml-1">Skill Name</label>
-                  <input name="name" defaultValue={currentSkill?.name} required className="w-full px-5 py-3 rounded-xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 focus:border-blue-500 outline-none transition-all text-sm font-bold dark:text-white" />
+                  <input name="name" defaultValue={currentSkill?.name} required className="w-full px-5 py-4 rounded-2xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 focus:border-blue-500 outline-none transition-all text-sm font-bold dark:text-white" />
                 </div>
 
                 <div className="space-y-2">
                   <label className="text-[10px] font-black text-neutral-400 uppercase tracking-widest ml-1">Category</label>
-                  <select name="category" defaultValue={currentSkill?.category} className="w-full px-5 py-3 rounded-xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 focus:border-blue-500 outline-none transition-all text-sm font-bold dark:text-white">
+                  <select name="category" defaultValue={currentSkill?.category} className="w-full px-5 py-4 rounded-2xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 focus:border-blue-500 outline-none transition-all text-sm font-bold dark:text-white">
                     <option value="Frontend">Frontend</option>
                     <option value="Backend">Backend</option>
                     <option value="DevOps">DevOps</option>
@@ -164,12 +186,57 @@ export default function SkillsManager() {
                   </select>
                 </div>
 
-                <div className="space-y-2">
-                  <label className="text-[10px] font-black text-neutral-400 uppercase tracking-widest ml-1">Proficiency Level ({currentSkill?.level || 50}%)</label>
+                <div className="space-y-4">
+                  <label className="text-[10px] font-black text-neutral-400 uppercase tracking-widest ml-1 flex justify-between">
+                    <span>Select Icon / Logo</span>
+                    <span className="text-blue-600">{iconPreview}</span>
+                  </label>
+                  
+                  <div className="grid grid-cols-4 sm:grid-cols-6 gap-3">
+                    {/* Local Logos */}
+                    {LOCAL_LOGOS.map((logo) => (
+                      <button
+                        key={logo.icon}
+                        type="button"
+                        onClick={() => setIconPreview(logo.icon)}
+                        className={`p-3 rounded-2xl border transition-all flex items-center justify-center ${iconPreview === logo.icon ? 'bg-blue-600 border-blue-600 scale-110 shadow-lg' : 'bg-neutral-50 dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800 hover:border-blue-500'}`}
+                      >
+                        <img src={`/logos/skills/${logo.icon}`} className="w-6 h-6 object-contain" alt={logo.name} />
+                      </button>
+                    ))}
+                    {/* Lucide Icons */}
+                    {LUCIDE_ICONS.map((icon) => (
+                      <button
+                        key={icon}
+                        type="button"
+                        onClick={() => setIconPreview(icon)}
+                        className={`p-3 rounded-2xl border transition-all flex items-center justify-center ${iconPreview === icon ? 'bg-blue-600 border-blue-500 text-white scale-110 shadow-lg' : 'bg-neutral-50 dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800 text-neutral-400'}`}
+                      >
+                        <Cpu size={20} />
+                      </button>
+                    ))}
+                  </div>
+
+                  <div className="pt-2">
+                    <p className="text-[9px] font-bold text-neutral-500 mb-2 ml-1">OR ENTER CUSTOM URL</p>
+                    <input 
+                      placeholder="https://example.com/logo.svg"
+                      value={iconPreview.startsWith('http') ? iconPreview : ''}
+                      onChange={(e) => setIconPreview(e.target.value)}
+                      className="w-full px-5 py-4 rounded-xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 focus:border-blue-500 outline-none transition-all text-[11px] font-bold dark:text-white" 
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <label className="text-[10px] font-black text-neutral-400 uppercase tracking-widest ml-1 flex justify-between">
+                    <span>Proficiency Level</span>
+                    <span className="text-blue-600">{currentSkill?.level || 50}%</span>
+                  </label>
                   <input type="range" name="level" min="0" max="100" defaultValue={currentSkill?.level || 50} className="w-full h-2 bg-neutral-100 dark:bg-neutral-800 rounded-full appearance-none cursor-pointer accent-blue-600" />
                 </div>
 
-                <button type="submit" className="w-full py-4 bg-blue-600 text-white rounded-xl font-black text-xs uppercase tracking-widest shadow-xl shadow-blue-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all">
+                <button type="submit" className="w-full py-5 bg-blue-600 text-white rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl shadow-blue-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all">
                   {currentSkill ? "Update Skill" : "Save Skill"}
                 </button>
               </form>

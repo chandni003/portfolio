@@ -7,6 +7,7 @@ import { KnowledgeSection } from "../../../portfolio/components/KnowledgeSection
 import { AboutSection } from "../../../portfolio/components/AboutSection";
 import { ContactSection } from "../../../portfolio/components/ContactSection";
 import { Footer } from "../../../portfolio/components/Footer";
+// import { ResumeDownloadButton } from "../../../portfolio/components/ResumeDownloadButton";
 
 export default function Home() {
     return (
@@ -45,7 +46,7 @@ export default function Home() {
                             I am <span className="text-black dark:text-white font-bold">Chandani Kumari</span>, a full stack developer dedicated to building high-performance web applications using the <span className="text-blue-600 dark:text-blue-400 font-bold">MERN Stack</span> and <span className="text-blue-600 dark:text-blue-400 font-bold">Next.js</span>. Delivering professional, modern digital experiences.
                         </p>
 
-                        <div className="flex flex-col sm:flex-row gap-6 mb-10">
+                        <div className="flex flex-col sm:flex-row flex-wrap gap-4 mb-10">
                             <Link
                                 href="/projects"
                                 className="group relative px-6 py-4 bg-black dark:bg-blue-600 text-white rounded-2xl font-bold text-lg overflow-hidden transition-all hover:scale-105 active:scale-95 text-center"
@@ -63,6 +64,8 @@ export default function Home() {
                                 Connect Now
                                 <Send size={20} className="group-hover:-rotate-45 transition-transform" />
                             </Link>
+
+                            {/* <ResumeDownloadButton variant="outline" /> */}
                         </div>
 
                         {/* Stats Badges = future use */}

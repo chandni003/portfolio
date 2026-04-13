@@ -1,29 +1,39 @@
 "use client";
 
 import React from "react";
-import { PageWrapper } from "../../../portfolio/components/PageWrapper";
-import { PROJECTS_DATA } from "../../../portfolio/data/mockData";
+import { PageWrapper } from "../../../../portfolio/components/PageWrapper";
+import { PROJECTS_DATA } from "../../../../portfolio/data/mockData";
 import { motion } from "framer-motion";
-import { ExternalLink, Github, Globe } from "lucide-react";
+import { ExternalLink, Globe, Hourglass } from "lucide-react";
 import Link from "next/link";
 
 export default function ProjectsPage() {
   return (
     <PageWrapper>
       {/* Projects Hero */}
-      <section className="pt-32 pb-16 px-4 text-center">
+      <section className="pt-32 pb-16 px-4 text-center z-10 relative">
         <div className="max-w-7xl mx-auto">
-          <motion.span
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-4xl md:text-6xl font-extrabold mb-4 dark:text-white"
+          >
+            Digital <span className="text-blue-500">Portfolio</span>
+          </motion.h1>
+          <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="px-4 py-1.5 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-600 dark:text-blue-400 text-[10px] font-black tracking-widest uppercase mb-8 inline-block"
+            transition={{ delay: 0.1 }}
+            className="text-neutral-500 dark:text-neutral-400 font-medium"
           >
-            Digital Portfolio
-          </motion.span>
-          <h1 className="text-5xl md:text-8xl font-black tracking-tight mb-8 leading-tight">
-            Case Studies & <br />
-            <span className="text-blue-600 italic">Work.</span>
-          </h1>
+            Case Studies & Work.
+          </motion.p>
+          <motion.div
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ delay: 0.2, duration: 0.8 }}
+            className="w-16 h-1 bg-blue-500 mx-auto mt-6 rounded-full"
+          />
         </div>
       </section>
 
@@ -66,14 +76,21 @@ export default function ProjectsPage() {
               </div>
 
               {/* Live Link Button (Bottom) */}
-              <Link
-                href={project.liveLink || "#"}
-                target="_blank"
-                className="w-full flex items-center justify-center gap-2 px-8 py-4 bg-blue-600 text-white rounded-2xl font-bold text-sm hover:bg-blue-700 transition-all hover:scale-[1.02] active:scale-95 group/btn"
-              >
-                <span>View Live Project</span>
-                <Globe size={18} className="group-hover:rotate-12 transition-transform" />
-              </Link>
+              {project.status === "idea" || !project.liveLink ? (
+                <div className="w-full flex items-center justify-center gap-2 px-8 py-4 bg-neutral-100 dark:bg-[#151824] border border-neutral-200 dark:border-white/5 text-neutral-400 dark:text-neutral-500 rounded-2xl font-bold text-sm cursor-not-allowed">
+                  <span>Coming Soon</span>
+                  <Hourglass size={18} />
+                </div>
+              ) : (
+                <Link
+                  href={project.liveLink || "#"}
+                  target="_blank"
+                  className="w-full flex items-center justify-center gap-2 px-8 py-4 bg-blue-600 text-white rounded-2xl font-bold text-sm hover:bg-blue-700 transition-all hover:scale-[1.02] active:scale-95 group/btn"
+                >
+                  <span>View Live Project</span>
+                  <Globe size={18} className="group-hover:rotate-12 transition-transform" />
+                </Link>
+              )}
 
               {/* Glow Effect */}
               <div className="absolute top-0 right-0 -z-0 w-32 h-32 bg-blue-600/5 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity" />

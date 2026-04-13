@@ -3,10 +3,10 @@
 import { motion } from "framer-motion";
 import { Send, ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { KnowledgeSection } from "../../portfolio/components/KnowledgeSection";
-import { AboutSection } from "../../portfolio/components/AboutSection";
-import { ContactSection } from "../../portfolio/components/ContactSection";
-import { Footer } from "../../portfolio/components/Footer";
+import { KnowledgeSection } from "../../../portfolio/components/KnowledgeSection";
+import { AboutSection } from "../../../portfolio/components/AboutSection";
+import { ContactSection } from "../../../portfolio/components/ContactSection";
+import { Footer } from "../../../portfolio/components/Footer";
 
 export default function Home() {
     return (
@@ -18,7 +18,7 @@ export default function Home() {
             </div>
 
             {/* Hero Section - First Fold */}
-            <section className="relative min-h-screen flex flex-col items-center justify-center px-4 pt-20">
+            <section className="relative min-h-screen flex flex-col items-center justify-center px-4 pt-32 md:pt-20">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -36,7 +36,7 @@ export default function Home() {
                             Full Stack Developer & Software Engineer
                         </motion.span>
 
-                        <h1 className="text-5xl md:text-8xl font-black tracking-tight mb-8 leading-tight">
+                        <h1 className="text-4xl md:text-7xl font-black tracking-tight mb-8 leading-tight">
                             Scalable <br />
                             <span className="bg-gradient-to-r from-blue-600 to-black dark:to-white bg-clip-text text-transparent">Solutions.</span>
                         </h1>
@@ -48,7 +48,7 @@ export default function Home() {
                         <div className="flex flex-col sm:flex-row gap-6 mb-10">
                             <Link
                                 href="/projects"
-                                className="group relative px-8 py-4 bg-black dark:bg-blue-600 text-white rounded-2xl font-bold text-lg overflow-hidden transition-all hover:scale-105 active:scale-95 text-center"
+                                className="group relative px-6 py-4 bg-black dark:bg-blue-600 text-white rounded-2xl font-bold text-lg overflow-hidden transition-all hover:scale-105 active:scale-95 text-center"
                             >
                                 <span className="relative z-10 flex items-center justify-center gap-2">
                                     Latest Work
@@ -79,7 +79,7 @@ export default function Home() {
                     </div>
 
                     {/* Right Side: Image with Blue/Black Aesthetic */}
-                    <div className="flex-1 relative group w-full max-w-md aspect-square lg:aspect-auto lg:h-[600px]">
+                    <div className="flex-1 relative group w-full max-w-sm aspect-square lg:aspect-auto lg:h-[500px]">
                         <motion.div
                             initial={{ opacity: 0, scale: 0.8 }}
                             animate={{ opacity: 1, scale: 1 }}

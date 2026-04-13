@@ -50,7 +50,8 @@ export const PROJECTS_DATA = [
     image: "https://images.unsplash.com/photo-1557821552-17105176677c?q=80&w=1000",
     tags: ["React", "Node.js", "MongoDB", "Stripe"],
     link: "#",
-    liveLink: "https://elitecommerce.example.com"
+    liveLink: "https://elitecommerce.example.com",
+    status: "completed"
   },
   {
     title: "Nexus Dashboard",
@@ -58,7 +59,8 @@ export const PROJECTS_DATA = [
     image: "https://images.unsplash.com/photo-1551288049-bbdac8a28a1e?q=80&w=1000",
     tags: ["Next.js", "TypeScript", "Tailwind", "Charts"],
     link: "#",
-    liveLink: "https://nexus.example.com"
+    liveLink: "https://nexus.example.com",
+    status: "completed"
   },
   {
     title: "AI Semantic Search",
@@ -66,7 +68,15 @@ export const PROJECTS_DATA = [
     image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1000",
     tags: ["Gemini AI", "Python", "React", "Vector DB"],
     link: "#",
-    liveLink: "https://ai-search.example.com"
+    liveLink: "https://ai-search.example.com",
+    status: "completed"
+  },
+  {
+    title: "Next-Gen Finance Manager",
+    description: "An upcoming idea for an AI-powered personal finance manager focusing on predictive spending.",
+    image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=1000",
+    tags: ["Idea", "Fintech", "AI"],
+    status: "idea"
   }
 ];
 
@@ -120,5 +130,20 @@ export const LICENSE_DATA = [
     date: "Dec 2023",
     description: "Advanced certification in modern UI engineering, covering React state management, performance, and responsive design.",
     link: "#"
+  }
+];
+
+export const EXTRACURRICULAR_DATA = [
+  {
+    title: "National Service Scheme (NSS)",
+    role: "Active Volunteer",
+    period: "2021 - 2023",
+    description: "Participated in community health drives, environmental awareness campaigns, and rural education programs. Collaborated with local authorities to organize campus-wide blood donation camps and tree-planting initiatives."
+  },
+  {
+    title: "College-Level Hackathon",
+    role: "Core Organizing Committee",
+    period: "2023",
+    description: "Played a key role in orchestrating a large-scale university hackathon. Managed event logistics, coordinated with technical mentors, and facilitated a collaborative problem-solving environment for hundreds of student developers."
   }
 ];

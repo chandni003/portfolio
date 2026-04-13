@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { useTheme } from "next-themes";
 import { cn } from "../lib/utils";
+import { Logo } from "./Logo";
 
 type NavItem = {
   name: string;
@@ -113,8 +114,9 @@ const Navbar = () => {
       </div>
 
       {/* Mobile Toggle Button */}
-      <div className="md:hidden flex items-center justify-between w-full max-w-sm px-6 py-3 bg-white/10 dark:bg-black/20 backdrop-blur-md border border-white/20 dark:border-white/10 rounded-full shadow-xl">
-        <div className="flex items-center justify-between w-full">
+      <div className="md:hidden flex items-center justify-between w-full max-w-sm px-4 py-3 bg-white/10 dark:bg-black/20 backdrop-blur-md border border-white/20 dark:border-white/10 rounded-full shadow-xl">
+        <Logo className="scale-75 origin-left" />
+        <div className="flex items-center gap-1">
           <button
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
             className="p-2 rounded-full"
@@ -137,6 +139,12 @@ const Navbar = () => {
             className="absolute top-24 left-4 right-4 md:hidden bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-3xl p-8 shadow-2xl z-50 overflow-hidden"
           >
             <div className="flex flex-col gap-6">
+              <div className="flex items-center justify-between mb-2">
+                <Logo className="scale-90 origin-left" />
+                <button onClick={() => setIsOpen(false)} className="p-2">
+                   <X size={24} className="text-neutral-400" />
+                </button>
+              </div>
               {navItems.map((item) => (
                 <div key={item.name} className="flex flex-col gap-4">
                   {item.href ? (

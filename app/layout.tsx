@@ -5,12 +5,13 @@ import { ThemeProvider } from "../../portfolio/components/ThemeProvider";
 import Navbar from "../../portfolio/components/Navbar";
 import { Logo } from "../../portfolio/components/Logo";
 import { Footer } from "../../portfolio/components/Footer";
+import { CallToAction } from "../../portfolio/components/CallToAction";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Modern Portfolio",
-  description: "Next.js Portfolio with Aceternity UI",
+  title: "Chandani Kumari | Portfolio",
+  description: "Chandani Kumari Portfolio",
 };
 
 export default function RootLayout({
@@ -27,10 +28,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Logo className="fixed top-8 left-8 z-[60] scale-90 md:scale-100" />
-          <Navbar />
           {children}
-          <Footer />
         </ThemeProvider>
       </body>
     </html>

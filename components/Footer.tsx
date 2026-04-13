@@ -13,6 +13,7 @@ const navLinks = [
   { name: "Experience", href: "/experience" },
   { name: "Services", href: "/services" },
   { name: "Projects", href: "/projects" },
+  { name: "Contact", href: "/contact" },
 ];
 
 export const Footer = () => {

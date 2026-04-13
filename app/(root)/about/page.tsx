@@ -1,40 +1,46 @@
 "use client";
 
 import React from "react";
-import { PageWrapper } from "../../../portfolio/components/PageWrapper";
-import { AboutSection } from "../../../portfolio/components/AboutSection";
-import { ContactSection } from "../../../portfolio/components/ContactSection";
+import { PageWrapper } from "../../../../portfolio/components/PageWrapper";
+import { AboutSection } from "../../../../portfolio/components/AboutSection";
+import { ContactSection } from "../../../../portfolio/components/ContactSection";
 import { motion } from "framer-motion";
 
 export default function AboutPage() {
   return (
     <PageWrapper>
       {/* Intro Section with Image */}
-      <section className="pt-32 pb-16 px-4">
+      <section className="pt-40 pb-16 px-4 z-10 relative">
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16">
           <div className="flex-1 text-center lg:text-left">
-            <motion.span
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="px-4 py-1.5 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-600 dark:text-blue-400 text-[10px] font-black tracking-widest uppercase mb-8 inline-block"
-            >
-              Know More About Me
-            </motion.span>
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="text-5xl md:text-7xl font-black tracking-tight mb-8 leading-tight"
+              className="text-4xl md:text-6xl font-extrabold mb-4 dark:text-white"
             >
-              The Story Behind <br />
-              <span className="text-blue-600 underline decoration-blue-500/30 underline-offset-8">The Code.</span>
+              Know <span className="text-blue-500">About Me</span>
             </motion.h1>
             <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.1 }}
+              className="text-neutral-500 dark:text-neutral-400 font-medium mb-8"
+            >
+              The Story Behind The Code.
+            </motion.p>
+            <motion.div
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ delay: 0.2, duration: 0.8 }}
+              className="w-16 h-1 bg-blue-500 mx-auto lg:mx-0 mb-8 rounded-full"
+            />
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
               className="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed font-medium max-w-2xl mx-auto lg:mx-0"
-            ><p>
+            >
+              <p>
                 I&apos;m Chandani Kumari, a passionate full-stack developer dedicated to building high-performance, scalable web applications. My journey in tech is driven by a deep curiosity to solve complex problems and craft elegant digital experiences that leave a lasting impact.
               </p>
               <p className="text-neutral-500 dark:text-neutral-400 font-medium max-w-2xl mx-auto text-lg leading-relaxed mt-4">
@@ -42,15 +48,14 @@ export default function AboutPage() {
                 I engineer reliable digital solutions that empower businesses to thrive in a competitive landscape,
                 combining aesthetic precision with robust architectural foundations.
               </p>
-
-            </motion.p>
+            </motion.div>
           </div>
 
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.3 }}
-            className="flex-1 relative w-full max-w-md aspect-[4/5] rounded-[48px] overflow-hidden border border-neutral-200 dark:border-neutral-800 shadow-2xl group"
+            className="flex-1 relative w-full max-w-sm aspect-[4/5] rounded-[48px] overflow-hidden border border-neutral-200 dark:border-neutral-800 shadow-2xl group"
           >
             <div className="absolute inset-0 bg-blue-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10" />
             <img

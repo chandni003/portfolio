@@ -8,7 +8,7 @@ import Link from "next/link";
 export const ContactSection = () => {
     return (
         <section id="contact" className="py-24 px-4 bg-white dark:bg-[#0a0a0a] overflow-hidden">
-            <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-10 md:gap-16 items-center">
+            <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-10 md:gap-10 items-center">
                 {/* Left Column: Info & Socials */}
                 <div className="flex-[1.2] text-center md:text-left">
                     <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 text-[10px] font-black uppercase tracking-[0.2em] mb-8">
@@ -55,7 +55,7 @@ export const ContactSection = () => {
                         {[
                             { Icon: Github, href: "https://github.com" },
                             { Icon: Linkedin, href: "https://linkedin.com" },
-                            { Icon: Twitter, href: "https://twitter.com" }
+                            // { Icon: Twitter, href: "https://twitter.com" }
                         ].map((social, idx) => (
                             <Link 
                                 key={idx} 

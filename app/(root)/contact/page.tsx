@@ -8,7 +8,7 @@ import Link from "next/link";
 import { addDocument, COLLECTIONS } from "../../../../portfolio/lib/firestore";
 import { serverTimestamp } from "firebase/firestore";
 
-const TIME_SLOTS = ["09:00 AM", "10:30 AM", "12:00 PM", "01:30 PM", "03:00 PM", "04:30 PM"];
+const TIME_SLOTS = ["09:00 AM", "10:30 AM", "12:00 PM", "01:30 PM", "03:00 PM", "04:30 PM","06:30"];
 
 function MiniCalendar({
   selectedDate,
@@ -188,7 +188,7 @@ export default function ContactPage() {
               </div>
               <h3 className="text-xl font-black dark:text-white mb-2 uppercase tracking-tight">Email Directly</h3>
               <p className="text-sm text-neutral-500 dark:text-neutral-400 font-medium mb-4">chandanidev@example.com</p>
-              <div className="px-4 py-1.5 bg-blue-500/10 text-blue-600 text-[10px] font-black uppercase tracking-widest rounded-full">Typical reply: 2 hours</div>
+              <div className="px-4 py-1.5 bg-blue-500/10 text-blue-600 text-[10px] font-black uppercase tracking-widest rounded-full">Typical reply: 24 hours</div>
             </motion.div>
 
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} viewport={{ once: true }} className="p-8 rounded-[32px] bg-white/50 dark:bg-[#0f111a]/80 backdrop-blur-3xl border border-neutral-200 dark:border-white/5 flex flex-col items-center text-center group shadow-xl">

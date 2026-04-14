@@ -1,9 +1,9 @@
 "use client";
 
 import React from "react";
-import { PageWrapper } from "../../../../portfolio/components/PageWrapper";
-import { AboutSection } from "../../../../portfolio/components/AboutSection";
-import { ContactSection } from "../../../../portfolio/components/ContactSection";
+import { PageWrapper } from "../../../components/PageWrapper";
+import { AboutSection } from "../../../components/AboutSection";
+import { ContactSection } from "../../../components/ContactSection";
 import { motion } from "framer-motion";
 
 export default function AboutPage() {
@@ -59,7 +59,7 @@ export default function AboutPage() {
           >
             <div className="absolute inset-0 bg-blue-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10" />
             <img
-              src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1000"
+              src="/images/Snapchat-1676392261.jpg"
               alt="Chandani Kumari - Intro Portrait"
               className="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
             />

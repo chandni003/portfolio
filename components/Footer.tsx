@@ -9,18 +9,18 @@ import { Logo } from "./Logo";
 
 const navLinks = [
   { name: "Home", href: "/" },
-  { name: "About", href: "/about" },
-  { name: "Experience", href: "/experience" },
-  { name: "Services", href: "/services" },
-  { name: "Projects", href: "/projects" },
-  { name: "Contact", href: "/contact" },
+  { name: "About", href: "/about/" },
+  { name: "Experience", href: "/experience/work" },
+  { name: "Services", href: "/services/" },
+  { name: "Projects", href: "/projects/" },
+  { name: "Contact", href: "/contact/" },
 ];
 
 export const Footer = () => {
     const pathname = usePathname();
 
     // Hide footer on admin pages
-    if (pathname?.startsWith("/admin")) return null;
+    if (pathname?.startsWith("/admin/")) return null;
 
     return (
         <footer className="w-full bg-white dark:bg-[#0a0a0a] pt-24 pb-12 px-4 border-t border-neutral-100 dark:border-neutral-900">
@@ -53,7 +53,7 @@ export const Footer = () => {
                         <div>
                             <h4 className="text-xs font-black text-neutral-400 uppercase tracking-[0.2em] mb-8">Connect</h4>
                             <div className="flex gap-4">
-                                {[Github, Linkedin, Twitter].map((Icon, idx) => (
+                                {[Github, Linkedin].map((Icon, idx) => (
                                     <Link key={idx} href="#" className="p-3 rounded-xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-neutral-500 hover:text-blue-600 hover:border-blue-500/50 transition-all shadow-sm">
                                         <Icon size={20} />
                                     </Link>

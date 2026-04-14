@@ -6,7 +6,8 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Menu, X, Sun, Moon, Home, User, Briefcase,
-  Settings, Layout, FileText, Send, ChevronDown, GraduationCap
+  Settings, Layout, FileText, Send, ChevronDown, GraduationCap,
+  Download
 } from "lucide-react";
 import { useTheme } from "next-themes";
 import { cn } from "../lib/utils";
@@ -43,7 +44,7 @@ const Navbar = () => {
   // Avoid hydration mismatch
   useEffect(() => setMounted(true), []);
 
-  if (pathname.startsWith("/admin")) return null;
+  if (pathname.startsWith("/admin/")) return null;
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
@@ -111,6 +112,15 @@ const Navbar = () => {
           Let's Talk
           <Send size={14} />
         </Link>
+          {/* <a
+    href="https://drive.google.com/uc?export=download&id=YOUR_FILE_ID"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="group px-5 py-2.5 border border-neutral-200 dark:border-neutral-800 rounded-xl font-bold text-sm hover:bg-neutral-50 dark:hover:bg-neutral-900 transition-all hover:scale-105 active:scale-95 flex items-center gap-2"
+  >
+    Resume
+    <Download size={16} className="group-hover:translate-y-0.5 transition-transform" />
+  </a> */}
       </div>
 
       {/* Mobile Toggle Button */}

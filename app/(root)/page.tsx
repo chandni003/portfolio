@@ -7,6 +7,7 @@ import { KnowledgeSection } from "../../../portfolio/components/KnowledgeSection
 import { AboutSection } from "../../../portfolio/components/AboutSection";
 import { ContactSection } from "../../../portfolio/components/ContactSection";
 import { Footer } from "../../../portfolio/components/Footer";
+import { ResumeDownloadButton } from "../../../portfolio/components/DownloadResumeButton";
 // import { ResumeDownloadButton } from "../../../portfolio/components/ResumeDownloadButton";
 
 export default function Home() {
@@ -24,10 +25,10 @@ export default function Home() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8 }}
-                    className="w-full max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12"
+                    className="w-full max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-[160px]"
                 >
                     {/* Left Side: Content */}
-                    <div className="flex-1 text-left">
+                    <div className=" text-left">
                         <motion.span
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
@@ -38,8 +39,8 @@ export default function Home() {
                         </motion.span>
 
                         <h1 className="text-4xl md:text-7xl font-black tracking-tight mb-8 leading-tight">
-                            Scalable <br />
-                            <span className="bg-gradient-to-r from-blue-600 to-black dark:to-white bg-clip-text text-transparent">Solutions.</span>
+                            Full Stack <br />
+                            <span className="bg-gradient-to-r from-blue-600 to-black dark:to-white bg-clip-text text-transparent">Developer.</span>
                         </h1>
 
                         <p className="text-lg md:text-xl text-neutral-600 dark:text-neutral-400 mb-12 max-w-xl leading-relaxed font-medium">
@@ -64,6 +65,7 @@ export default function Home() {
                                 Connect Now
                                 <Send size={20} className="group-hover:-rotate-45 transition-transform" />
                             </Link>
+                            <ResumeDownloadButton />
 
                             {/* <ResumeDownloadButton variant="outline" /> */}
                         </div>
@@ -94,7 +96,7 @@ export default function Home() {
 
                             {/* The Image (Placeholder - Swap with public/hero-portrait.png) */}
                             <img
-                                src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1000"
+                                src="/images/Snapchat-1676392261.jpg"
                                 alt="Chandani Kumari Portfolio Portrait"
                                 className="h-full w-full object-cover relative z-10 grayscale-[0.2] group-hover:grayscale-0 transition-all duration-500"
                             />

@@ -28,10 +28,10 @@ export const CallToAction = () => {
                     
                     <div className="relative z-10">
                         <h2 className="text-3xl md:text-5xl font-extrabold text-white mb-6 tracking-tight">
-                            Let's Build Something Amazing Together
+                            Let&apos;s Build Something Amazing Together
                         </h2>
                         <p className="text-gray-300 max-w-2xl mx-auto text-sm md:text-base leading-relaxed mb-10 font-medium">
-                            Whether you're launching a startup, revamping an existing product, or need a powerful digital presence — I'll help transform your vision into reality with clean, efficient, and scalable solutions.
+                            Whether you&apos;re launching a startup, revamping an existing product, or need a powerful digital presence — I&apos;ll help transform your vision into reality with clean, efficient, and scalable solutions.
                         </p>
 
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">

@@ -118,11 +118,11 @@ export default function AboutPage() {
           <h2 className="text-4xl md:text-5xl font-black mb-12 uppercase tracking-tighter dark:text-white">Professional <span className="text-blue-600">Philosophy</span></h2>
 
           <div className="p-12 rounded-[48px] border border-blue-500/20 bg-blue-500/5 backdrop-blur-3xl relative">
-            <div className="absolute -top-6 -left-6 text-6xl text-blue-600/20 font-black">"</div>
+            <div className="absolute -top-6 -left-6 text-6xl text-blue-600/20 font-black">&quot;</div>
             <p className="text-xl md:text-3xl text-neutral-600 dark:text-white/90 leading-relaxed font-bold italic tracking-tight">
               I believe that code is an art form. Every pixel, every function, and every database query should be crafted with the same precision as a master&apos;s painting.
             </p>
-            <div className="absolute -bottom-12 -right-6 text-6xl text-blue-600/20 font-black">"</div>
+            <div className="absolute -bottom-12 -right-6 text-6xl text-blue-600/20 font-black">&quot;</div>
           </div>
         </div>
       </section>

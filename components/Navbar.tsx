@@ -109,7 +109,7 @@ const Navbar = () => {
           href="/contact"
           className="flex items-center gap-2 px-5 py-2 bg-black dark:bg-white text-white dark:text-black rounded-full text-sm font-semibold hover:scale-105 active:scale-95 transition-all"
         >
-          Let's Talk
+          Let&apos;s Talk
           <Send size={14} />
         </Link>
           {/* <a
@@ -189,13 +189,13 @@ const Navbar = () => {
                   )}
                 </div>
               ))}
-              <div className="h-px bg-neutral-200 dark:bg-neutral-800 w-full" />
+              <p className="text-[10px] text-neutral-400 font-black tracking-widest uppercase mb-1">Let&apos;s Connect</p>
               <Link
                 href="/contact"
                 onClick={() => setIsOpen(false)}
                 className="flex items-center justify-center gap-2 w-full py-4 bg-black dark:bg-white text-white dark:text-black rounded-2xl font-bold text-lg"
               >
-                Let's Talk
+                Let&apos;s Talk
                 <Send size={20} />
               </Link>
             </div>

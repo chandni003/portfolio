@@ -91,8 +91,8 @@ export default function AboutPage() {
           <div className="flex-1 w-full grid grid-cols-2 gap-6">
             <div className="space-y-6">
               <div className="p-8 rounded-[32px] bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-center shadow-lg">
-                <h3 className="text-4xl font-black text-blue-600 mb-2">2+</h3>
-                <p className="text-xs font-bold uppercase tracking-widest text-neutral-500">Years Exp.</p>
+                <h3 className="text-4xl font-black text-blue-600 mb-2">6</h3>
+                <p className="text-xs font-bold uppercase tracking-widest text-neutral-500">months Exp.</p>
               </div>
               <div className="p-8 rounded-[32px] bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-center shadow-lg">
                 <h3 className="text-4xl font-black text-blue-600 mb-2">15+</h3>

@@ -187,7 +187,7 @@ export default function ContactPage() {
                 <Mail size={24} />
               </div>
               <h3 className="text-xl font-black dark:text-white mb-2 uppercase tracking-tight">Email Directly</h3>
-              <p className="text-sm text-neutral-500 dark:text-neutral-400 font-medium mb-4">chandanidev@example.com</p>
+              <p className="text-sm text-neutral-500 dark:text-neutral-400 font-medium mb-4">chandniofficial001@gmail.com</p>
               <div className="px-4 py-1.5 bg-blue-500/10 text-blue-600 text-[10px] font-black uppercase tracking-widest rounded-full">Typical reply: 24 hours</div>
             </motion.div>
 
@@ -207,9 +207,9 @@ export default function ContactPage() {
               <h3 className="text-xl font-black dark:text-white mb-2 uppercase tracking-tight">Social Profiles</h3>
               <p className="text-sm text-neutral-500 dark:text-neutral-400 font-medium mb-4">Connect to see my latest work.</p>
               <div className="flex gap-4 mt-auto">
-                <Link href="#" className="p-2 rounded-lg bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-neutral-500 hover:text-emerald-500 hover:border-emerald-500/30 transition-colors"><Linkedin size={18} /></Link>
-                <Link href="#" className="p-2 rounded-lg bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-neutral-500 hover:text-emerald-500 hover:border-emerald-500/30 transition-colors"><Github size={18} /></Link>
-                <Link href="#" className="p-2 rounded-lg bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-neutral-500 hover:text-emerald-500 hover:border-emerald-500/30 transition-colors"><Twitter size={18} /></Link>
+                <Link href="https://www.linkedin.com/in/chandani-kumari-c1003" className="p-2 rounded-lg bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-neutral-500 hover:text-emerald-500 hover:border-emerald-500/30 transition-colors"><Linkedin size={18} /></Link>
+                <Link href="https://github.com/chandni003" className="p-2 rounded-lg bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-neutral-500 hover:text-emerald-500 hover:border-emerald-500/30 transition-colors"><Github size={18} /></Link>
+                {/* <Link href="#" className="p-2 rounded-lg bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-neutral-500 hover:text-emerald-500 hover:border-emerald-500/30 transition-colors"><Twitter size={18} /></Link> */}
               </div>
             </motion.div>
           </div>

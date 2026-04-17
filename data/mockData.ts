@@ -82,68 +82,134 @@ export const PROJECTS_DATA = [
 
 export const EXPERIENCE_DATA = [
   {
-    role: "Senior Full Stack Architect",
-    company: "TechNova Solutions",
-    period: "2023 - Present",
-    description: "Leading a distributed team in building scalable cloud architectures and high-performance frontend interfaces using React and Node.js."
+    id: 1,
+    role: "Full Stack Developer Intern",
+    company: "Alphanumeric Ideas Pvt Ltd",
+    location: "On-Site",
+    period: "Dec 2025 - Present",
+    description: "Developing and maintaining full-stack applications, collaborating with cross-functional teams to deliver high-quality digital solutions.",
+    achievements: ["Next.js", "Node.js", "JavaScript", "Firebase","Api", "Tailwind CSS", "Express.js", "Google Cloud", "GitHub", "Git"]
   },
   {
-    role: "Lead Frontend Engineer",
-    company: "DesignGrid AI",
-    period: "2021 - 2023",
-    description: "Architected a premium SaaS design system and led the migration to a modern Next.js 13 framework, resulting in 40% faster load times."
-  },
-  {
-    role: "Junior Web Developer",
-    company: "SoftScale Micro",
-    period: "2019 - 2021",
-    description: "Developed and maintained dozens of client websites using the MERN stack and finalized the UI/UX redesign of the core product."
+    id: 2,
+    role: "Python Web Developer Intern",
+    company: "Excellence Technology",
+    location: "Chandigarh, India(on-Site)",
+    period: "6 Months",
+    description: "Built and optimized web applications using Python and modern web frameworks, gaining hands-on experience in backend development and database management.",
+    achievements: ["Python", "Tkinter", "HTML", "CSS", "Bootstrap", "Flask", "Django"]
   }
 ];
 
 export const EDUCATION_DATA = [
   {
-    degree: "Master of Science in Computer Science",
-    institution: "Stanford University",
-    period: "2021 - 2023",
-    description: "Specialized in Distributed Systems and Human-Computer Interaction. Graduated with Honors."
+    id: 1,
+    degree: "Bachelor of Computer Applications (BCA)",
+    institution: "Punjabi University Patiala",
+    location: "Patiala, India",
+    period: "Ongoing",
+    description: "Focusing on computer science fundamentals, software development, and modern web technologies. Engaging in various technical workshops and projects.",
+    achievements: ["C/C++", "Web Development"],
+    awards: ["Academic Excellence"],
+    iconName: "GraduationCap"
   },
   {
-    degree: "Bachelor of Technology in Computer Engineering",
-    institution: "National Institute of Technology",
-    period: "2017 - 2021",
-    description: "Core focus on algorithmic problem solving, web technologies, and database architectures."
+    id: 2,
+    degree: "10+2 Non-Medical",
+    institution: "Punjab School Education Board",
+    location: "Punjab, India",
+    period: "Completed",
+    description: "Higher Secondary Education with a focus on Physics, Chemistry, and Mathematics.",
+    achievements: ["Physics", "Maths"],
+    awards: ["Merit Holder"],
+    iconName: "School"
+  },
+  {
+    id: 3,
+    degree: "10th Standard",
+    institution: "Punjab School Education Board",
+    location: "Punjab, India",
+    period: "Completed",
+    description: "Secondary Education covering core academic subjects.",
+    achievements: ["General Science", "Languages"],
+    awards: ["Merit Holder"],
+    iconName: "BookOpen"
   }
 ];
 
 export const LICENSE_DATA = [
   {
-    name: "AWS Certified Solutions Architect – Associate",
-    issuer: "Amazon Web Services",
-    date: "Aug 2024",
-    description: "Demonstrated comprehensive understanding of how to architect and deploy secure, robust applications on AWS.",
-    link: "#"
-  },
-  {
-    name: "Meta Front-End Developer Professional Certificate",
-    issuer: "Meta",
-    date: "Dec 2023",
-    description: "Advanced certification in modern UI engineering, covering React state management, performance, and responsive design.",
+    name: "Python Web Developer Internship Certificate",
+    issuer: "Excellence Technology",
+    date: "6 Months",
+    description: "Completed a comprehensive 6-month internship focusing on Python web development and backend technologies.",
     link: "#"
   }
 ];
 
 export const EXTRACURRICULAR_DATA = [
   {
-    title: "National Service Scheme (NSS)",
-    role: "Active Volunteer",
-    period: "2021 - 2023",
-    description: "Participated in community health drives, environmental awareness campaigns, and rural education programs. Collaborated with local authorities to organize campus-wide blood donation camps and tree-planting initiatives."
+    id: 1,
+    title: "Workshop on Generative AI",
+    role: "Participant",
+    period: "2024",
+    location: "IIT Ropar",
+    description: "Participated in an intensive workshop on Generative AI at IIT Ropar, exploring Large Language Models (LLMs), prompt engineering, and the future of AI-driven development."
   },
   {
-    title: "College-Level Hackathon",
-    role: "Core Organizing Committee",
+    id: 2,
+    title: "National Service Scheme (NSS) Workshop",
+    role: "Active Volunteer",
     period: "2023",
-    description: "Played a key role in orchestrating a large-scale university hackathon. Managed event logistics, coordinated with technical mentors, and facilitated a collaborative problem-solving environment for hundreds of student developers."
-  }
+    description: "Engaged in community service and social welfare projects through the NSS workshop, focusing on social responsibility and community impact."
+  },
+  // {
+  //   id: 3,
+  //   title: "National Service Scheme (NSS)",
+  //   role: "Active Volunteer",
+  //   period: "2021 - 2023",
+  //   description: "Participated in community health drives, environmental awareness campaigns, and rural education programs. Collaborated with local authorities to organize campus-wide blood donation camps and tree-planting initiatives."
+  // },
+  // {
+  //   id: 4,
+  //   title: "College-Level Hackathon",
+  //   role: "Core Organizing Committee",
+  //   period: "2023",
+  //   description: "Played a key role in orchestrating a large-scale university hackathon. Managed event logistics, coordinated with technical mentors, and facilitated a collaborative problem-solving environment for hundreds of student developers."
+  // },
+  // {
+  //   id: 5,
+  //   title: "Open Source Contributor",
+  //   role: "Developer",
+  //   period: "Ongoing",
+  //   description: "Active contributor to various Next.js and React focused open source libraries, helping improve documentation and core functionality."
+  // },
+  // {
+  //   id: 6,
+  //   title: "Tech Community Mentor",
+  //   role: "Mentor",
+  //   period: "2023 - Present",
+  //   description: "Mentoring junior developers and conducting weekly workshops on modern web development, focusing on React and the MERN stack."
+  // }
+];
+
+export const GENERAL_AWARDS_DATA = [
+  {
+    id: 1,
+    title: "College Level Hackathon Winner",
+    year: "2023",
+    description: "Secured 1st place in the college-level hackathon for developing an innovative web solution under pressure."
+  },
+  // {
+  //   id: 2,
+  //   title: "Best Innovation Award",
+  //   year: "2023",
+  //   description: "Awarded for the most innovative software solution at the annual tech symposium."
+  // },
+  // {
+  //   id: 3,
+  //   title: "Top Performer Q3",
+  //   year: "2023",
+  //   description: "Recognized for exceptional contribution and delivering high impact features."
+  // }
 ];

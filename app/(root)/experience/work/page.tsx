@@ -5,55 +5,11 @@ import { PageWrapper } from "../../../../../portfolio/components/PageWrapper";
 import { motion } from "framer-motion";
 import { Briefcase, Trophy, Users } from "lucide-react";
 
-// Dummy Data that will eventually come from Admin Panel
-const WORK_EXPERIENCE_DATA = [
-    {
-        id: 1,
-        role: "Frontend Developer",
-        company: "Tech Innovations Inc.",
-        location: "Remote",
-        period: "Jan 2023 - Present",
-        description: "Led the development of scalable UI components using Next.js and Tailwind CSS. Improved overall application performance and optimized rendering times by 30%.",
-        achievements: ["React", "Next.js", "TailwindCSS"]
-    },
-    {
-        id: 2,
-        role: "Freelance Web Developer",
-        company: "Self-Employed",
-        location: "Global",
-        period: "Jun 2022 - Dec 2022",
-        description: "Designed and developed custom portfolio websites and landing pages for various clients. Focused on responsive design, modern aesthetics, and seamless user experiences.",
-        achievements: ["UI/UX Design", "Framer Motion", "Client Relations"]
-    }
-];
-
-const AWARDS_DATA = [
-    {
-        id: 1,
-        title: "Best Innovation Award",
-        year: "2023",
-        description: "Awarded for the most innovative software solution at the annual tech symposium."
-    },
-    {
-        id: 2,
-        title: "Top Performer Q3",
-        year: "2023",
-        description: "Recognized for exceptional contribution and delivering high impact features."
-    }
-];
-
-const ACTIVITIES_DATA = [
-    {
-        id: 1,
-        title: "Open Source Contributor",
-        description: "Active contributor to various Next.js and React focused open source libraries."
-    },
-    {
-        id: 2,
-        title: "Tech Community Mentor",
-        description: "Mentoring junior developers and conducting weekly workshops on modern web development."
-    }
-];
+import { 
+    EXPERIENCE_DATA as WORK_EXPERIENCE_DATA, 
+    EXTRACURRICULAR_DATA as ACTIVITIES_DATA, 
+    GENERAL_AWARDS_DATA as AWARDS_DATA 
+} from "../../../../data/mockData";
 
 export default function WorkPage() {
     return (
@@ -94,7 +50,7 @@ export default function WorkPage() {
                 <div className="absolute left-[39px] top-12 bottom-12 w-1 bg-gradient-to-b from-blue-600 via-blue-500 to-purple-600 md:hidden rounded-full shadow-[0_0_15px_rgba(59,130,246,0.5)]"></div>
 
                 <div className="space-y-24">
-                    {WORK_EXPERIENCE_DATA.map((exp, idx) => (
+                    {WORK_EXPERIENCE_DATA.map((exp :any, idx:any) => (
                         <div key={exp.id} className={`relative flex items-start md:w-[calc(50%+24px)] ${idx % 2 === 0 ? "md:justify-end pr-0 md:pr-14 md:mr-auto pl-20 md:pl-0" : "md:justify-start pl-20 md:pl-14 md:ml-auto"}`}>
                             {/* Dot visual marker */}
                             <div className={`absolute top-6 transform -translate-x-1/2 flex items-center justify-center z-10 w-10 h-10 rounded-full bg-[#0a0a0a] border border-blue-500/50 shadow-[0_0_15px_rgba(59,130,246,0.5)] ${idx % 2 === 0 ? "left-[24px] md:right-0 md:left-auto md:translate-x-1/2" : "left-[24px] md:left-0 md:-translate-x-1/2"}`}>
@@ -122,7 +78,7 @@ export default function WorkPage() {
                                     {exp.achievements.length > 0 && (
                                         <li className="flex items-start gap-3 mt-4">
                                             <div className="flex gap-2 flex-wrap text-xs text-blue-300">
-                                                {exp.achievements.map((ach, i) => (
+                                                {exp.achievements.map((ach:any, i:any) => (
                                                     <span key={i} className="bg-blue-500/10 border border-blue-500/20 px-2 py-1 rounded-md">{ach}</span>
                                                 ))}
                                             </div>

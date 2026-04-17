@@ -35,12 +35,12 @@ export const CallToAction = () => {
                         </p>
 
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
-                            <Link href="" className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3.5 bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-semibold rounded-xl transition-colors shadow-lg shadow-blue-500/20">
+                            <Link href="/contact" className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3.5 bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-semibold rounded-xl transition-colors shadow-lg shadow-blue-500/20">
                                 <PhoneCall className="w-[18px] h-[18px]" />
                                 Schedule a Call
                             </Link>
 
-                            <Link href="mailto:contact@example.com" className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3.5 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold rounded-xl transition-all shadow-lg shadow-purple-500/20">
+                            <Link href="mailto:chandniofficial001@gmail.com" className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3.5 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold rounded-xl transition-all shadow-lg shadow-purple-500/20">
                                 <Mail className="w-[18px] h-[18px]" />
                                 Email Me
                             </Link>

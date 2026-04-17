@@ -29,32 +29,32 @@ export const ContactSection = () => {
                     </p>
 
                     <div className="space-y-6 mb-12">
-                        <div className="flex items-center justify-center md:justify-start gap-4 group/item cursor-pointer">
+                        <Link href="mailto:chandniofficial001@gmail.com" className="flex items-center justify-center md:justify-start gap-4 group/item cursor-pointer">
                             <div className="p-4 rounded-2xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-blue-600 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all shadow-sm">
                                 <Mail size={20} />
                             </div>
                             <div>
                                 <p className="text-[10px] font-black text-neutral-400 uppercase tracking-widest leading-none mb-1">Email Me</p>
-                                <p className="text-xl font-black dark:text-white break-all">chandanidev@example.com</p>
+                                <p className="text-xl font-black dark:text-white break-all">chandniofficial001@gmail.com</p>
                             </div>
-                        </div>
+                        </Link>
 
-                        <div className="flex items-center justify-center md:justify-start gap-4 group/item cursor-pointer">
+                        <Link href="/contact" className="flex items-center justify-center md:justify-start gap-4 group/item cursor-pointer">
                             <div className="p-4 rounded-2xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-blue-600 group-hover/item:bg-blue-600 group-hover/item:text-white transition-all shadow-sm">
                                 <Phone size={20} />
                             </div>
                             <div>
                                 <p className="text-[10px] font-black text-neutral-400 uppercase tracking-widest leading-none mb-1">Call Directly</p>
-                                <p className="text-xl font-black dark:text-white">+91 98765 43210</p>
+                                <p className="text-xl font-black dark:text-white">Schedule a Call</p>
                             </div>
-                        </div>
+                        </Link>
                     </div>
 
                     {/* Social Row */}
                     <div className="flex items-center justify-center md:justify-start gap-4">
                         {[
-                            { Icon: Github, href: "https://github.com" },
-                            { Icon: Linkedin, href: "https://linkedin.com" },
+                            { Icon: Github, href: "https://github.com/chandni003" },
+                            { Icon: Linkedin, href: "https://www.linkedin.com/in/chandani-kumari-c1003" },
                             // { Icon: Twitter, href: "https://twitter.com" }
                         ].map((social, idx) => (
                             <Link 

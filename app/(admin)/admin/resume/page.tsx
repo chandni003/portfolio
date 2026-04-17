@@ -11,6 +11,8 @@ import { serverTimestamp } from "firebase/firestore";
 
 export default function ResumeManager() {
   const [resumeURL, setResumeURL] = useState<string | null>(null);
+  const [driveURL, setDriveURL] = useState<string>("");
+  const [savingDrive, setSavingDrive] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [deleting, setDeleting] = useState(false);
@@ -21,7 +23,16 @@ export default function ResumeManager() {
 
   // Fetch current resume URL + download history
   useEffect(() => {
-    getResumeURL().then(setResumeURL);
+    getResumeURL().then(url => {
+      setResumeURL(url);
+    });
+
+    // Fetch raw metadata for drive link
+    getDoc(doc(db, COLLECTIONS.RESUME_META, "current")).then(snap => {
+      if (snap.exists()) {
+        setDriveURL(snap.data().driveURL || "");
+      }
+    });
 
     const unsub = subscribeToCollection(COLLECTIONS.RESUME_DOWNLOADS, (data) => {
       setDownloads(data);
@@ -69,15 +80,31 @@ export default function ResumeManager() {
     }
   };
 
+  const handleSaveDriveLink = async () => {
+    setSavingDrive(true);
+    try {
+      await setDoc(doc(db, COLLECTIONS.RESUME_META, "current"), {
+        driveURL: driveURL.trim(),
+        updatedAt: serverTimestamp(),
+      }, { merge: true });
+      showToast("success", "Google Drive link saved!");
+      if (!resumeURL) setResumeURL(driveURL.trim());
+    } catch {
+      showToast("error", "Failed to save link.");
+    } finally {
+      setSavingDrive(false);
+    }
+  };
+
   const handleDelete = async () => {
     if (!confirm("Remove the current resume? Users won't be able to download it until you upload a new one.")) return;
     setDeleting(true);
     try {
       await deleteResume();
       // Clear Firestore reference
-      await setDoc(doc(db, COLLECTIONS.RESUME_META, "current"), { url: null, updatedAt: serverTimestamp() });
-      setResumeURL(null);
-      showToast("success", "Resume removed.");
+      await setDoc(doc(db, COLLECTIONS.RESUME_META, "current"), { url: null, updatedAt: serverTimestamp() }, { merge: true });
+      setResumeURL(driveURL || null);
+      showToast("success", "Resume file removed.");
     } catch {
       showToast("error", "Failed to delete resume.");
     } finally {
@@ -179,10 +206,30 @@ export default function ResumeManager() {
           ) : (
             <>
               <Upload size={40} className="mx-auto text-neutral-400 mb-4" />
-              <p className="font-black dark:text-white mb-1">{resumeURL ? "Replace Resume" : "Upload Resume"}</p>
+              <p className="font-black dark:text-white mb-1">{resumeURL ? "Replace File" : "Upload Resume File"}</p>
               <p className="text-xs text-neutral-500">Click to choose a PDF · Max 10MB</p>
             </>
           )}
+        </div>
+
+        <div className="pt-6 border-t border-neutral-100 dark:border-neutral-800">
+          <label className="text-[10px] font-black text-neutral-400 uppercase tracking-widest ml-1 mb-2 block">Or use Google Drive Link</label>
+          <div className="flex gap-3">
+            <input 
+              value={driveURL}
+              onChange={(e) => setDriveURL(e.target.value)}
+              placeholder="https://drive.google.com/..."
+              className="flex-1 px-6 py-4 rounded-2xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 focus:border-blue-500 outline-none transition-all text-sm font-bold dark:text-white"
+            />
+            <button 
+              onClick={handleSaveDriveLink}
+              disabled={savingDrive}
+              className="px-8 py-4 bg-zinc-900 dark:bg-white text-white dark:text-black rounded-2xl font-bold text-sm hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50"
+            >
+              {savingDrive ? <Loader2 size={18} className="animate-spin" /> : "Save Link"}
+            </button>
+          </div>
+          <p className="text-[10px] text-neutral-500 mt-2 ml-1">Note: Link will be used if no file is uploaded.</p>
         </div>
       </div>
 

@@ -4,44 +4,18 @@ import React from "react";
 import { PageWrapper } from "../../../../../portfolio/components/PageWrapper";
 import { motion } from "framer-motion";
 import { GraduationCap, School, BookOpen, Calendar, MapPin, Trophy, Award, HeartHandshake } from "lucide-react";
-import { LICENSE_DATA, EXTRACURRICULAR_DATA } from "../../../../../portfolio/data/mockData";
+import { EDUCATION_DATA as MOCK_EDUCATION_DATA, LICENSE_DATA, EXTRACURRICULAR_DATA } from "../../../../data/mockData";
 
-// Dummy Data that will eventually come from Admin Panel
-const EDUCATION_DATA = [
-    {
-        id: 1,
-        degree: "Bachelor of Computer Applications (BCA)",
-        institution: "Punjabi University",
-        location: "Patiala, Punjab",
-        period: "Graduated",
-        description: "Focused on software engineering, web development, data structures, and database management. Honored with the prestigious College Colour title for overall academic and co-curricular excellence.",
-        icon: GraduationCap,
-        achievements: ["Web Development", "Data Structures"],
-        awards: ["College Colour Award", "2x Merit Holder"]
-    },
-    {
-        id: 2,
-        degree: "10+2 (Senior Secondary)",
-        institution: "Punjab School Education Board",
-        location: "Punjab, India",
-        period: "Completed",
-        description: "Completed higher secondary education with a focus on core subjects, laying a strong academic foundation for further studies in technology.",
-        icon: School,
-        achievements: ["Academics", "Core Subjects"],
-        awards: ["Merit Holder"]
-    },
-    {
-        id: 3,
-        degree: "10th (Matriculation)",
-        institution: "Punjab School Education Board",
-        location: "Punjab, India",
-        period: "Completed",
-        description: "Completed foundational education with dedication, highlighting a consistent academic track record.",
-        icon: BookOpen,
-        achievements: ["Foundation", "Excellence"],
-        awards: ["Merit Holder"]
-    }
-];
+const iconMap: { [key: string]: any } = {
+    GraduationCap,
+    School,
+    BookOpen
+};
+
+const EDUCATION_DATA = MOCK_EDUCATION_DATA.map((edu:any) => ({
+    ...edu,
+    icon: iconMap[edu.iconName || "GraduationCap"]
+}));
 
 export default function EducationPage() {
     return (
@@ -76,7 +50,7 @@ export default function EducationPage() {
             {/* Education Timeline Grid */}
             <section className="py-24 px-4">
                 <div className="max-w-6xl mx-auto space-y-12">
-                    {EDUCATION_DATA.map((edu, idx) => (
+                    {EDUCATION_DATA.map((edu:any, idx:any) => (
                         <motion.div
                             key={edu.id}
                             initial={{ opacity: 0, y: 20 }}
@@ -117,7 +91,7 @@ export default function EducationPage() {
                                     </p>
 
                                     <div className="flex flex-wrap gap-4 mb-4">
-                                        {edu.awards && edu.awards.map((award, i) => (
+                                        {edu.awards && edu.awards.map((award:any, i:any) => (
                                             <div key={i} className="flex items-center gap-2 text-[10px] font-black text-amber-600 dark:text-amber-400 uppercase tracking-widest bg-amber-500/10 px-4 py-2 rounded-xl border border-amber-500/20 shadow-[0_0_15px_rgba(245,158,11,0.1)]">
                                                 <Trophy size={14} className="text-amber-500 drop-shadow-md" />
                                                 {award}
@@ -126,7 +100,7 @@ export default function EducationPage() {
                                     </div>
 
                                     <div className="flex flex-wrap gap-4">
-                                        {edu.achievements.map((tag, i) => (
+                                        {edu.achievements.map((tag:any, i:any) => (
                                             <div key={i} className="flex items-center gap-2 text-[10px] font-black text-neutral-400 uppercase tracking-widest bg-neutral-50 dark:bg-neutral-950/50 px-4 py-2 rounded-xl border border-neutral-100 dark:border-neutral-800">
                                                 <div className="w-1.5 h-1.5 rounded-full bg-purple-500" />
                                                 {tag}
@@ -153,7 +127,7 @@ export default function EducationPage() {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        {LICENSE_DATA.map((license, idx) => (
+                        {LICENSE_DATA.map((license:any, idx:any) => (
                             <motion.div
                                 key={idx}
                                 initial={{ opacity: 0, y: 20 }}
@@ -193,7 +167,7 @@ export default function EducationPage() {
                 </div>
 
                 <div className="max-w-4xl mx-auto space-y-8">
-                    {EXTRACURRICULAR_DATA.map((activity, idx) => (
+                    {EXTRACURRICULAR_DATA.map((activity:any, idx:any) => (
                         <motion.div
                             key={idx}
                             initial={{ opacity: 0, x: idx % 2 === 0 ? -40 : 40 }}

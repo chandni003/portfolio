@@ -53,9 +53,12 @@ export const Footer = () => {
                         <div>
                             <h4 className="text-xs font-black text-neutral-400 uppercase tracking-[0.2em] mb-8">Connect</h4>
                             <div className="flex gap-4">
-                                {[Github, Linkedin].map((Icon, idx) => (
-                                    <Link key={idx} href="#" className="p-3 rounded-xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-neutral-500 hover:text-blue-600 hover:border-blue-500/50 transition-all shadow-sm">
-                                        <Icon size={20} />
+                                {[
+                                    { Icon: Github, href: "https://github.com/chandni003" },
+                                    { Icon: Linkedin, href: "https://www.linkedin.com/in/chandani-kumari-c1003" }
+                                ].map((social, idx) => (
+                                    <Link key={idx} href={social.href} className="p-3 rounded-xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-neutral-500 hover:text-blue-600 hover:border-blue-500/50 transition-all shadow-sm">
+                                        <social.Icon size={20} />
                                     </Link>
                                 ))}
                             </div>
@@ -64,14 +67,14 @@ export const Footer = () => {
                         <div>
                             <h4 className="text-xs font-black text-neutral-400 uppercase tracking-[0.2em] mb-8">Direct</h4>
                             <div className="space-y-4">
-                                <Link href="mailto:chandanidev@example.com" className="flex items-center gap-3 group">
+                                <Link href="mailto:chandniofficial001@gmail.com" className="flex items-center gap-3 group">
                                     <Mail size={16} className="text-blue-600 group-hover:scale-110 transition-transform" />
-                                    <span className="text-sm font-bold text-neutral-600 dark:text-neutral-400 break-all">chandanidev@example.com</span>
+                                    <span className="text-sm font-bold text-neutral-600 dark:text-neutral-400 break-all">chandniofficial001@gmail.com</span>
                                 </Link>
-                                <div className="flex items-center gap-3 group">
+                                <Link href="/contact" className="flex items-center gap-3 group">
                                     <Phone size={16} className="text-blue-600 group-hover:scale-110 transition-transform" />
-                                    <span className="text-sm font-bold text-neutral-600 dark:text-neutral-400">+91 98765 43210</span>
-                                </div>
+                                    <span className="text-sm font-bold text-neutral-600 dark:text-neutral-400">Schedule a Call</span>
+                                </Link>
                             </div>
                         </div>
                     </div>

@@ -7,41 +7,41 @@ import { Code2, Layout, Database, Bot, CheckCircle2 } from "lucide-react";
 
 const SERVICES = [
   {
-    title: "Full Stack Development",
-    designation: "Senior Software Architect",
-    image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1000",
-    description: "Building robust, scalable end-to-end applications using the MERN stack and Next.js.",
-    details: "Specializing in high-performance cloud architectures, database optimization, and real-time data synchronization. I lead the technical direction to ensure long-term scalability and security.",
-    icon: Code2,
+    title: "Frontend Development",
+    designation: "UI/UX & Frontend Specialist",
+    image: "/images/frontend.png",
+    description: "Creating stunning, highly interactive user interfaces with a focus on performance and accessibility.",
+    details: "I focus on user-centric design principles, ensuring every interaction feels natural and intuitive. From wireframing to high-fidelity prototypes and React/Next.js implementation.",
+    icon: Layout,
     gradient: "from-blue-600 to-indigo-600"
   },
   {
-    title: "UI/UX Design & Frontend",
-    designation: "Lead Product Designer",
-    image: "https://images.unsplash.com/photo-1586717791821-3f44a563eb4c?q=80&w=1000",
-    description: "Creating stunning, highly interactive user interfaces with a focus on performance and accessibility.",
-    details: "I focus on user-centric design principles, ensuring every interaction feels natural and intuitive. From wireframing to high-fidelity prototypes and React implementation.",
-    icon: Layout,
-    gradient: "from-purple-600 to-pink-600"
-  },
-  {
-    title: "Backend Architecture",
-    designation: "Systems & Security Lead",
-    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc48?q=80&w=1000",
+    title: "Backend Development",
+    designation: "Systems & Database Engineer",
+    image: "/images/backend.png",
     description: "Designing efficient database schemas and REST/GraphQL APIs for high-availability systems.",
     details: "Expertise in Node.js, Express, and distributed systems. I ensure that your backend is not just fast, but resilient against heavy loads and potential security threats.",
     icon: Database,
-    gradient: "from-emerald-600 to-teal-600"
+    gradient: "from-purple-600 to-pink-600"
   },
   {
-    title: "AI & Automation",
-    designation: "AI Workflow Specialist",
-    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1000",
-    description: "Implementing cutting-edge LLMs and AI automation workflows into your existing digital products.",
-    details: "Integrating Gemini AI and other advanced models to automate business processes, generate content, and provide intelligent data insights directly within your applications.",
-    icon: Bot,
-    gradient: "from-orange-600 to-amber-600"
-  }
+    title: "Full Stack Development",
+    designation: "Senior Software Architect",
+    image: "/images/fullstack.png",
+    description: "Building robust, scalable end-to-end applications using the MERN stack and Next.js.",
+    details: "Specializing in high-performance cloud architectures, database optimization, and real-time data synchronization. I lead the technical direction to ensure long-term scalability and security.",
+    icon: Code2,
+    gradient: "from-emerald-600 to-teal-600"
+  },
+  // {
+  //   title: "AI & Automation",
+  //   designation: "AI Workflow Specialist",
+  //   image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1000",
+  //   description: "Implementing cutting-edge LLMs and AI automation workflows into your existing digital products.",
+  //   details: "Integrating Gemini AI and other advanced models to automate business processes, generate content, and provide intelligent data insights directly within your applications.",
+  //   icon: Bot,
+  //   gradient: "from-orange-600 to-amber-600"
+  // }
 ];
 
 export default function ServicesPage() {

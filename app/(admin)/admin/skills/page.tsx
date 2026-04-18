@@ -180,7 +180,9 @@ export default function SkillsManager() {
                   <label className="text-[10px] font-black text-neutral-400 uppercase tracking-widest ml-1">Category</label>
                   <select name="category" defaultValue={currentSkill?.category} className="w-full px-5 py-4 rounded-2xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 focus:border-blue-500 outline-none transition-all text-sm font-bold dark:text-white">
                     <option value="Frontend">Frontend</option>
-                    <option value="Backend">Backend</option>
+                    <option value="Backend & DB">Backend & DB</option>
+                    <option value="Languages">Languages</option>
+                    <option value ="Framework">Framework</option>
                     <option value="DevOps">DevOps</option>
                     <option value="AI/ML">AI/ML</option>
                   </select>

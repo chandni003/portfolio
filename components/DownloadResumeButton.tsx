@@ -25,12 +25,28 @@ export const ResumeDownloadButton = () => {
     trackResumeDownload({
       userAgent: navigator.userAgent,
       referrer: document.referrer || "direct",
-    }).catch(() => {});
+    }).catch(() => { });
 
-    // Open/Download the URL
-    window.open(resumeURL, "_blank");
+    // Check if it's a Google Drive view link, and convert to direct download link
+    let finalURL = resumeURL;
+    if (resumeURL.includes("drive.google.com/file/d/")) {
+      const match = resumeURL.match(/\/d\/([^/]+)/);
+      if (match && match[1]) {
+        finalURL = `https://drive.google.com/uc?export=download&id=${match[1]}`;
+      }
+    }
 
-    setTimeout(() => setDownloading(false), 2000);
+    // Trigger download using an anchor element
+    const link = document.createElement("a");
+    link.href = finalURL;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.download = "Chandani_Kumari_Resume.pdf";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    setTimeout(() => setDownloading(false), 200);
   };
 
   if (loading) {

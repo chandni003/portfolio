@@ -22,6 +22,7 @@ const CATEGORIES = [
   "Languages",
   "Frontend",
   "Backend & DB",
+  "Framework",
   "AI & Automation"
 ];
 

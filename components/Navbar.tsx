@@ -22,17 +22,17 @@ type NavItem = {
 
 const navItems: NavItem[] = [
   { name: "Home", href: "/", icon: Home },
-  { name: "About", href: "/about", icon: User },
+  { name: "About", href: "/about/", icon: User },
   {
     name: "Experience",
     icon: Briefcase,
     subItems: [
-      { name: "Work History", href: "/experience/work", icon: Briefcase },
-      { name: "Education History", href: "/experience/education", icon: GraduationCap }
+      { name: "Work History", href: "/experience/work/", icon: Briefcase },
+      { name: "Education History", href: "/experience/education/", icon: GraduationCap }
     ]
   },
-  { name: "Services", href: "/services", icon: Settings },
-  { name: "Projects", href: "/projects", icon: Layout },
+  { name: "Services", href: "/services/", icon: Settings },
+  { name: "Projects", href: "/projects/", icon: Layout },
 ];
 
 const Navbar = () => {
@@ -106,21 +106,21 @@ const Navbar = () => {
 
         {/* Let's Talk Button */}
         <Link
-          href="/contact"
+          href="/contact/"
           className="flex items-center gap-2 px-5 py-2 bg-black dark:bg-white text-white dark:text-black rounded-full text-sm font-semibold hover:scale-105 active:scale-95 transition-all"
         >
           Let&apos;s Talk
           <Send size={14} />
         </Link>
-          {/* <a
-    href="https://drive.google.com/uc?export=download&id=YOUR_FILE_ID"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="group px-5 py-2.5 border border-neutral-200 dark:border-neutral-800 rounded-xl font-bold text-sm hover:bg-neutral-50 dark:hover:bg-neutral-900 transition-all hover:scale-105 active:scale-95 flex items-center gap-2"
-  >
-    Resume
-    <Download size={16} className="group-hover:translate-y-0.5 transition-transform" />
-  </a> */}
+        {/* <a
+          href="https://drive.google.com/drive/u/0/home"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group px-5 py-2.5 border border-neutral-200 dark:border-neutral-800 rounded-xl font-bold text-sm hover:bg-neutral-50 dark:hover:bg-neutral-900 transition-all hover:scale-105 active:scale-95 flex items-center gap-2"
+        >
+          Resume
+          <Download size={16} className="group-hover:translate-y-0.5 transition-transform" />
+        </a> */}
       </div>
 
       {/* Mobile Toggle Button */}
@@ -152,7 +152,7 @@ const Navbar = () => {
               <div className="flex items-center justify-between mb-2">
                 <Logo className="scale-90 origin-left" />
                 <button onClick={() => setIsOpen(false)} className="p-2">
-                   <X size={24} className="text-neutral-400" />
+                  <X size={24} className="text-neutral-400" />
                 </button>
               </div>
               {navItems.map((item) => (

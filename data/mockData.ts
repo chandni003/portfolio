@@ -144,6 +144,13 @@ export const LICENSE_DATA = [
     date: "6 Months",
     description: "Completed a comprehensive 6-month internship focusing on Python web development and backend technologies.",
     link: "#"
+  },
+  {
+    name: "Generative AI Workshop",
+    issuer: "Techgyan (IIT Ropar)",
+    date: "2025",
+    description: "Participated in an intensive workshop on Generative AI, exploring Large Language Models (LLMs), prompt engineering, and future AI trends.",
+    link: "#"
   }
 ];
 
@@ -152,7 +159,7 @@ export const EXTRACURRICULAR_DATA = [
     id: 1,
     title: "Workshop on Generative AI",
     role: "Participant",
-    period: "2024",
+    period: "2025",
     location: "IIT Ropar",
     description: "Participated in an intensive workshop on Generative AI at IIT Ropar, exploring Large Language Models (LLMs), prompt engineering, and the future of AI-driven development."
   },

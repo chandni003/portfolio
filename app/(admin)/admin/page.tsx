@@ -22,7 +22,8 @@ export default function LoginPage() {
       const user = result.user;
       
       // Admin check
-      if (user.email === "chandniofficial001@gmail.com") {
+      const ADMIN_EMAIL = process.env.NEXT_PUBLIC_ADMIN_EMAIL;
+      if (user.email === ADMIN_EMAIL) {
         router.push("/admin/dashboard");
       } else {
         await auth.signOut();

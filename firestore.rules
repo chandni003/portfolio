@@ -1,0 +1,57 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── PUBLIC READ COLLECTIONS ──────────────────────────────────────────────
+    // Skills and Projects are public portfolio data — anyone can read them.
+    // Only authenticated admins can write.
+
+    match /skills/{docId} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.token.email == "chandniofficial001@gmail.com";
+    }
+
+    match /projects/{docId} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.token.email == "chandniofficial001@gmail.com";
+    }
+
+    // ── ADMIN-ONLY COLLECTIONS ───────────────────────────────────────────────
+    // Contact inquiries, meetings, schedules — only the admin can access.
+
+    match /inquiries/{docId} {
+      allow create: if true;   // Anyone can submit a contact form
+      allow read, update, delete: if request.auth != null && request.auth.token.email == "chandniofficial001@gmail.com";
+    }
+
+    match /meetings/{docId} {
+      allow create: if true;   // Anyone can book a meeting
+      allow read, update, delete: if request.auth != null && request.auth.token.email == "chandniofficial001@gmail.com";
+    }
+
+    match /schedules/{docId} {
+      allow read: if true;     // Public can see availability
+      allow write: if request.auth != null && request.auth.token.email == "chandniofficial001@gmail.com";
+    }
+
+    match /analytics/{docId} {
+      allow create: if true;   // Tracking events from public
+      allow read, update, delete: if request.auth != null && request.auth.token.email == "chandniofficial001@gmail.com";
+    }
+
+    match /experience/{docId} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.token.email == "chandniofficial001@gmail.com";
+    }
+
+    match /resume_downloads/{docId} {
+      allow create: if true;   // Anyone can trigger a download log
+      allow read, update, delete: if request.auth != null && request.auth.token.email == "chandniofficial001@gmail.com";
+    }
+
+    match /resume_meta/{docId} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.token.email == "chandniofficial001@gmail.com";
+    }
+  }
+}

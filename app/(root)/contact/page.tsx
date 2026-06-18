@@ -5,10 +5,10 @@ import { PageWrapper } from "../../../../portfolio/components/PageWrapper";
 import { motion, AnimatePresence } from "framer-motion";
 import { Send, Calendar, Clock, CheckCircle2, Sparkles, X, Mail, MapPin, MessageSquare, Linkedin, Github, Twitter, ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
-import { addDocument, COLLECTIONS } from "../../../../portfolio/lib/firestore";
+import { addDocument, COLLECTIONS, getMeetingsByEmail } from "../../../../portfolio/lib/firestore";
 import { serverTimestamp } from "firebase/firestore";
 
-const TIME_SLOTS = ["09:00 AM", "10:30 AM", "12:00 PM", "01:30 PM", "03:00 PM", "04:30 PM","06:30"];
+const TIME_SLOTS = ["09:00 AM", "10:30 AM", "12:00 PM", "12:45 AM", "01:30 PM", "03:00 PM", "04:30 PM", "06:30"];
 
 function MiniCalendar({
   selectedDate,
@@ -104,6 +104,13 @@ export default function ContactPage() {
   const [isBooking, setIsBooking] = useState(false);
   const [showMeetingSuccess, setShowMeetingSuccess] = useState(false);
 
+  // Status check state
+  const [statusEmail, setStatusEmail] = useState("");
+  const [isCheckingStatus, setIsCheckingStatus] = useState(false);
+  const [checkedMeetings, setCheckedMeetings] = useState<any[]>([]);
+  const [showStatusModal, setShowStatusModal] = useState(false);
+  const [hasCheckedStatus, setHasCheckedStatus] = useState(false);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -142,6 +149,20 @@ export default function ContactPage() {
       console.error("Error booking meeting:", error);
     } finally {
       setIsBooking(false);
+    }
+  };
+
+  const handleCheckStatus = async () => {
+    if (!statusEmail) return;
+    setIsCheckingStatus(true);
+    setHasCheckedStatus(true);
+    try {
+      const results = await getMeetingsByEmail(statusEmail);
+      setCheckedMeetings(results);
+    } catch (error) {
+      console.error("Error checking status:", error);
+    } finally {
+      setIsCheckingStatus(false);
     }
   };
 
@@ -332,6 +353,14 @@ export default function ContactPage() {
                   <Sparkles size={20} className="text-blue-600 group-hover:text-white group-hover:rotate-12 transition-all" />
                   {isBooking ? "Booking..." : "Confirm Booking"}
                 </button>
+
+                <button
+                  onClick={() => setShowStatusModal(true)}
+                  className="w-full mt-4 py-3 bg-neutral-100 dark:bg-neutral-800/50 border border-neutral-200 dark:border-neutral-800/80 rounded-2xl font-bold text-xs uppercase tracking-widest text-neutral-500 hover:text-blue-600 hover:border-blue-500/30 transition-all flex items-center justify-center gap-2"
+                >
+                  <Clock size={14} />
+                  Check Meeting Status
+                </button>
               </div>
             </motion.div>
 
@@ -407,6 +436,88 @@ export default function ContactPage() {
                 <button onClick={() => setShowMeetingSuccess(false)} className="w-full py-4 bg-emerald-600 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-emerald-700 transition-all hover:scale-[1.02]">
                   Close Window
                 </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Check Status Modal */}
+      <AnimatePresence>
+        {showStatusModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              className="max-w-2xl w-full p-10 rounded-[48px] bg-white dark:bg-[#0a0a0a] border border-blue-500/20 shadow-2xl relative overflow-hidden"
+            >
+              <button
+                onClick={() => {
+                  setShowStatusModal(false);
+                  setHasCheckedStatus(false);
+                  setCheckedMeetings([]);
+                }}
+                className="absolute top-6 right-6 p-2 rounded-full bg-neutral-100 dark:bg-neutral-900 text-neutral-400 hover:text-neutral-700 dark:hover:text-white transition-colors"
+              >
+                <X size={18} />
+              </button>
+
+              <div className="relative z-10 w-full">
+                <h3 className="text-3xl font-black mb-2 uppercase tracking-tighter dark:text-white">Track Booking</h3>
+                <p className="text-neutral-500 dark:text-neutral-400 font-medium mb-8">Enter your email to check your meeting status.</p>
+
+                <div className="flex gap-3 mb-10">
+                  <input
+                    type="email"
+                    value={statusEmail}
+                    onChange={e => setStatusEmail(e.target.value)}
+                    placeholder="you@domain.com"
+                    className="flex-1 px-6 py-4 rounded-2xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 focus:border-blue-500 outline-none transition-all text-sm font-bold dark:text-white"
+                  />
+                  <button
+                    onClick={handleCheckStatus}
+                    disabled={isCheckingStatus || !statusEmail}
+                    className="px-8 py-4 bg-blue-600 text-white rounded-2xl font-black text-sm hover:bg-blue-700 transition-all disabled:opacity-50"
+                  >
+                    {isCheckingStatus ? "Checking..." : "Search"}
+                  </button>
+                </div>
+
+                {hasCheckedStatus && (
+                  <div className="space-y-4 max-h-[350px] overflow-y-auto pr-2 custom-scrollbar">
+                    {checkedMeetings.length === 0 ? (
+                      <div className="text-center py-10 opacity-50">
+                        <p className="font-bold uppercase tracking-widest text-xs text-neutral-500">No bookings found for this email.</p>
+                      </div>
+                    ) : (
+                      checkedMeetings.map((m, i) => (
+                        <div key={i} className="p-5 rounded-3xl bg-neutral-50 dark:bg-white/5 border border-neutral-200 dark:border-white/10 flex items-center justify-between gap-4">
+                          <div>
+                            <p className="text-[10px] font-black uppercase tracking-widest text-blue-600 mb-1">{m.date} • {m.time}</p>
+                            <div className="flex items-center gap-2">
+                              <p className="font-black text-sm dark:text-white uppercase tracking-tight">{m.status}</p>
+                              {m.status === "confirmed" && <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />}
+                            </div>
+                          </div>
+                          {m.status === "confirmed" && (
+                            <Link
+                              href={`/meeting?id=${m.id}`}
+                              className="px-5 py-2.5 bg-blue-600 text-white rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/20"
+                            >
+                              Join Call
+                            </Link>
+                          )}
+                        </div>
+                      ))
+                    )}
+                  </div>
+                )}
               </div>
             </motion.div>
           </motion.div>

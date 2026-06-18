@@ -7,7 +7,8 @@ import {
   doc, 
   query, 
   orderBy,
-  onSnapshot
+  onSnapshot,
+  where
 } from "firebase/firestore";
 import { db } from "./firebase";
 
@@ -93,4 +94,10 @@ export const trackResumeDownload = async (downloaderInfo: { userAgent?: string; 
     ...downloaderInfo,
     downloadedAt: new Date(),
   });
+};
+
+export const getMeetingsByEmail = async (email: string) => {
+  const q = query(collection(db, COLLECTIONS.MEETINGS), where("email", "==", email));
+  const querySnapshot = await getDocs(q);
+  return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 };

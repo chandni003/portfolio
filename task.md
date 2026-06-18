@@ -1,0 +1,8 @@
+- [x] Setup environment variables for Admin Access
+- [x] Refactor `lib/AuthContext.tsx` and `app/(admin)/admin/page.tsx` to use `NEXT_PUBLIC_ADMIN_EMAIL`
+- [x] Install `@zegocloud/zego-uikit-prebuilt`
+- [x] Create `app/(root)/meeting/[id]/page.tsx`
+- [x] Update `app/(admin)/admin/schedules/page.tsx` with "Start Meeting" and "Copy Link" buttons
+- [x] Add "Check Status" feature to `app/(root)/contact/page.tsx`
+- [/] Provide `.env` template to the user
+- [ ] Verify functionality

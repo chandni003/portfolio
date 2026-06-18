@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Calendar, Clock, Mail, CheckCircle2, XCircle, Trash2 } from "lucide-react";
+import { Calendar, Clock, Mail, CheckCircle2, XCircle, Trash2, Video, Copy } from "lucide-react";
 import { subscribeToCollection, COLLECTIONS, updateDocument, deleteDocument } from "../../../../lib/firestore";
 
 export default function SchedulesManager() {
@@ -159,6 +159,31 @@ export default function SchedulesManager() {
                   >
                     <XCircle size={18} />
                   </button>
+                )}
+                {meeting.status === "confirmed" && (
+                  <>
+                    <button
+                      onClick={() => {
+                        const url = `${window.location.origin}/meeting?id=${meeting.id}`;
+                        window.open(url, "_blank");
+                      }}
+                      className="p-3 bg-blue-600/10 text-blue-600 rounded-2xl hover:bg-blue-600/20 transition-all"
+                      title="Start Video Call"
+                    >
+                      <Video size={18} />
+                    </button>
+                    <button
+                      onClick={() => {
+                        const url = `${window.location.origin}/meeting?id=${meeting.id}`;
+                        navigator.clipboard.writeText(url);
+                        alert("Meeting link copied to clipboard!");
+                      }}
+                      className="p-3 bg-neutral-100 dark:bg-neutral-800 text-neutral-500 rounded-2xl hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-all"
+                      title="Copy Link"
+                    >
+                      <Copy size={18} />
+                    </button>
+                  </>
                 )}
                 <button
                   onClick={() => handleDelete(meeting.id)}

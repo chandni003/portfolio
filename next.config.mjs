@@ -1,9 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',        // Generate static HTML/CSS/JS into /out
-  trailingSlash: true,     // firebase.json expects /page/ routes
+  // output: 'export', // Removed because we are migrating to Vercel and need API routes!
+  trailingSlash: true,
   images: {
-    unoptimized: true,     // next/image requires a server by default; disable for static export
+    unoptimized: true,
   },
 };
 

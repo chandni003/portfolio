@@ -27,26 +27,25 @@ export const ResumeDownloadButton = () => {
       referrer: document.referrer || "direct",
     }).catch(() => { });
 
-    // Check if it's a Google Drive view link, and convert to direct download link
-    let finalURL = resumeURL;
+    // Parse Google Drive links to their direct download equivalent
+    let targetURL = resumeURL;
+    
     if (resumeURL.includes("drive.google.com/file/d/")) {
       const match = resumeURL.match(/\/d\/([^/]+)/);
       if (match && match[1]) {
-        finalURL = `https://drive.google.com/uc?export=download&id=${match[1]}`;
+        targetURL = `https://drive.google.com/uc?export=download&id=${match[1]}`;
       }
+      // Google Drive blocks server-side proxies, so we must navigate directly
+      window.open(targetURL, '_blank');
+    } else {
+      // For ImageKit, we route through our Next.js API proxy to guarantee
+      // the exact filename "Chandani_Kumari_Resume.pdf" bypassing CORS quirks.
+      const proxyUrl = `/api/download?url=${encodeURIComponent(targetURL)}`;
+      window.location.href = proxyUrl;
     }
 
-    // Trigger download using an anchor element
-    const link = document.createElement("a");
-    link.href = finalURL;
-    link.target = "_blank";
-    link.rel = "noopener noreferrer";
-    link.download = "Chandani_Kumari_Resume.pdf";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-
-    setTimeout(() => setDownloading(false), 200);
+    // Freeze the button for 3 seconds to prevent duplicate rapid downloads
+    setTimeout(() => setDownloading(false), 3000);
   };
 
   if (loading) {

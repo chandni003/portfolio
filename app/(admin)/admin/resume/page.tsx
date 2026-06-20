@@ -2,35 +2,35 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Upload, FileText, Trash2, Download, ExternalLink, CheckCircle2, AlertCircle, Loader2, Users, Clock, TrendingUp } from "lucide-react";
-import { uploadResume, deleteResume, getResumeURL } from "../../../../lib/storage";
-import { subscribeToCollection, updateDocument, COLLECTIONS, addDocument } from "../../../../lib/firestore";
+import { Upload, FileText, Trash2, Download, ExternalLink, CheckCircle2, AlertCircle, Loader2, Users, Clock, TrendingUp, Cloud, HardDrive, Star } from "lucide-react";
+import { getResumeURL } from "../../../../lib/storage";
+import { subscribeToCollection, COLLECTIONS } from "../../../../lib/firestore";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from "../../../../lib/firebase";
 import { serverTimestamp } from "firebase/firestore";
 
 export default function ResumeManager() {
-  const [resumeURL, setResumeURL] = useState<string | null>(null);
-  const [driveURL, setDriveURL] = useState<string>("");
+  const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
+  const [driveUrl, setDriveUrl] = useState<string>("");
+  const [activeSource, setActiveSource] = useState<"imagekit" | "drive" | null>(null);
+  
   const [savingDrive, setSavingDrive] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
-  const [deleting, setDeleting] = useState(false);
+  const [deletingUploaded, setDeletingUploaded] = useState(false);
   const [downloads, setDownloads] = useState<any[]>([]);
   const [loadingDownloads, setLoadingDownloads] = useState(true);
   const [toast, setToast] = useState<{ type: "success" | "error"; msg: string } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Fetch current resume URL + download history
+  // Fetch current resume metadata + download history
   useEffect(() => {
-    getResumeURL().then(url => {
-      setResumeURL(url);
-    });
-
-    // Fetch raw metadata for drive link
     getDoc(doc(db, COLLECTIONS.RESUME_META, "current")).then(snap => {
       if (snap.exists()) {
-        setDriveURL(snap.data().driveURL || "");
+        const data = snap.data();
+        setUploadedUrl(data.url || null);
+        setDriveUrl(data.driveURL || "");
+        setActiveSource(data.activeSource || null);
       }
     });
 
@@ -44,6 +44,19 @@ export default function ResumeManager() {
   const showToast = (type: "success" | "error", msg: string) => {
     setToast({ type, msg });
     setTimeout(() => setToast(null), 3500);
+  };
+
+  const handleSetActive = async (source: "imagekit" | "drive") => {
+    try {
+      await setDoc(doc(db, COLLECTIONS.RESUME_META, "current"), {
+        activeSource: source,
+        updatedAt: serverTimestamp(),
+      }, { merge: true });
+      setActiveSource(source);
+      showToast("success", `Active resume updated to ${source === 'drive' ? 'Google Drive' : 'Uploaded File'}!`);
+    } catch (err) {
+      showToast("error", "Failed to update active resume.");
+    }
   };
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,20 +75,47 @@ export default function ResumeManager() {
     setUploadProgress(0);
 
     try {
-      const url = await uploadResume(file, setUploadProgress);
-      // Save the URL + upload timestamp to Firestore for reference
+      const progressInterval = setInterval(() => {
+        setUploadProgress(prev => (prev < 90 ? prev + 10 : prev));
+      }, 500);
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const response = await fetch("/api/imagekit/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      clearInterval(progressInterval);
+      setUploadProgress(100);
+
+      if (!response.ok) {
+        throw new Error("Upload failed");
+      }
+
+      const data = await response.json();
+      const url = data.url;
+      const fileId = data.fileId;
+      
+      const newActiveSource = activeSource || "imagekit";
+
       await setDoc(doc(db, COLLECTIONS.RESUME_META, "current"), {
         url,
+        fileId,
         filename: file.name,
+        activeSource: newActiveSource,
         updatedAt: serverTimestamp(),
-      });
-      setResumeURL(url);
+      }, { merge: true });
+      
+      setUploadedUrl(url);
+      setActiveSource(newActiveSource);
       showToast("success", "Resume uploaded successfully!");
     } catch (err) {
       showToast("error", "Upload failed. Please try again.");
     } finally {
       setUploading(false);
-      setUploadProgress(0);
+      setTimeout(() => setUploadProgress(0), 1000);
       if (fileInputRef.current) fileInputRef.current.value = "";
     }
   };
@@ -83,12 +123,15 @@ export default function ResumeManager() {
   const handleSaveDriveLink = async () => {
     setSavingDrive(true);
     try {
+      const newActiveSource = activeSource || "drive";
       await setDoc(doc(db, COLLECTIONS.RESUME_META, "current"), {
-        driveURL: driveURL.trim(),
+        driveURL: driveUrl.trim(),
+        activeSource: newActiveSource,
         updatedAt: serverTimestamp(),
       }, { merge: true });
+      
+      setActiveSource(newActiveSource);
       showToast("success", "Google Drive link saved!");
-      if (!resumeURL) setResumeURL(driveURL.trim());
     } catch {
       showToast("error", "Failed to save link.");
     } finally {
@@ -96,19 +139,55 @@ export default function ResumeManager() {
     }
   };
 
-  const handleDelete = async () => {
-    if (!confirm("Remove the current resume? Users won't be able to download it until you upload a new one.")) return;
-    setDeleting(true);
+  const handleDeleteUploaded = async () => {
+    if (!confirm("Delete the uploaded resume?")) return;
+    setDeletingUploaded(true);
     try {
-      await deleteResume();
-      // Clear Firestore reference
-      await setDoc(doc(db, COLLECTIONS.RESUME_META, "current"), { url: null, updatedAt: serverTimestamp() }, { merge: true });
-      setResumeURL(driveURL || null);
-      showToast("success", "Resume file removed.");
+      const snap = await getDoc(doc(db, COLLECTIONS.RESUME_META, "current"));
+      const fileId = snap.exists() ? snap.data().fileId : null;
+      if (fileId) {
+        await fetch("/api/imagekit/delete", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ fileId })
+        });
+      }
+
+      const newActiveSource = activeSource === "imagekit" ? (driveUrl ? "drive" : null) : activeSource;
+
+      await setDoc(doc(db, COLLECTIONS.RESUME_META, "current"), { 
+        url: null, 
+        fileId: null, 
+        activeSource: newActiveSource,
+        updatedAt: serverTimestamp() 
+      }, { merge: true });
+      
+      setUploadedUrl(null);
+      setActiveSource(newActiveSource);
+      showToast("success", "Uploaded resume deleted.");
     } catch {
-      showToast("error", "Failed to delete resume.");
+      showToast("error", "Failed to delete uploaded resume.");
     } finally {
-      setDeleting(false);
+      setDeletingUploaded(false);
+    }
+  };
+
+  const handleClearDrive = async () => {
+    if (!confirm("Clear the Google Drive link?")) return;
+    try {
+      const newActiveSource = activeSource === "drive" ? (uploadedUrl ? "imagekit" : null) : activeSource;
+
+      await setDoc(doc(db, COLLECTIONS.RESUME_META, "current"), { 
+        driveURL: null, 
+        activeSource: newActiveSource,
+        updatedAt: serverTimestamp() 
+      }, { merge: true });
+      
+      setDriveUrl("");
+      setActiveSource(newActiveSource);
+      showToast("success", "Drive link cleared.");
+    } catch {
+      showToast("error", "Failed to clear drive link.");
     }
   };
 
@@ -118,6 +197,23 @@ export default function ResumeManager() {
     return dl.toDateString() === today.toDateString();
   }).length;
 
+  let drivePreviewUrl: string | null = null;
+  if (driveUrl) {
+    if (driveUrl.includes("drive.google.com/file/d/")) {
+      const match = driveUrl.match(/\/d\/([^/]+)/);
+      if (match && match[1]) {
+        drivePreviewUrl = `https://drive.google.com/file/d/${match[1]}/preview`;
+      }
+    } else if (driveUrl.includes("docs.google.com/document/d/")) {
+      const match = driveUrl.match(/\/d\/([^/]+)/);
+      if (match && match[1]) {
+        drivePreviewUrl = `https://docs.google.com/document/d/${match[1]}/preview`;
+      }
+    } else {
+      drivePreviewUrl = driveUrl; // fallback
+    }
+  }
+
   return (
     <div className="space-y-8 pb-12">
       {/* Header */}
@@ -126,7 +222,7 @@ export default function ResumeManager() {
           Resume <span className="text-blue-600">Manager</span>
         </h1>
         <p className="text-neutral-500 dark:text-neutral-400 font-medium text-sm mt-1">
-          Upload your resume PDF and track who downloads it.
+          Manage multiple resume sources and track downloads.
         </p>
       </div>
 
@@ -135,7 +231,7 @@ export default function ResumeManager() {
         {[
           { label: "Total Downloads", value: downloads.length, icon: Download, color: "text-blue-500", bg: "bg-blue-500/10" },
           { label: "Today", value: todayCount, icon: Clock, color: "text-emerald-500", bg: "bg-emerald-500/10" },
-          { label: "Resume Status", value: resumeURL ? "Active" : "Not Set", icon: FileText, color: resumeURL ? "text-emerald-500" : "text-red-500", bg: resumeURL ? "bg-emerald-500/10" : "bg-red-500/10" },
+          { label: "Active Source", value: activeSource === "imagekit" ? "Uploaded" : (activeSource === "drive" ? "Google Drive" : "None"), icon: Star, color: activeSource ? "text-amber-500" : "text-red-500", bg: activeSource ? "bg-amber-500/10" : "bg-red-500/10" },
         ].map((s, i) => (
           <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}
             className="p-6 bg-white dark:bg-black/20 backdrop-blur-xl border border-neutral-200 dark:border-neutral-800 rounded-[28px] shadow-sm"
@@ -149,87 +245,161 @@ export default function ResumeManager() {
         ))}
       </div>
 
-      {/* Upload Zone */}
-      <div className="p-8 bg-white dark:bg-black/20 backdrop-blur-xl border border-neutral-200 dark:border-neutral-800 rounded-[40px] shadow-sm space-y-6">
-        <h2 className="text-xl font-black dark:text-white uppercase tracking-tighter">Current Resume</h2>
-
-        {resumeURL ? (
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-6 bg-emerald-500/5 border border-emerald-500/20 rounded-3xl">
-            <div className="w-14 h-14 bg-emerald-500/10 rounded-2xl flex items-center justify-center shrink-0">
-              <FileText size={28} className="text-emerald-600" />
+      {/* Dual Upload Zones */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        {/* Source 1: Direct Upload */}
+        <div className={`p-8 backdrop-blur-xl border-2 rounded-[40px] shadow-sm space-y-6 transition-all ${activeSource === 'imagekit' ? 'bg-blue-500/5 border-blue-500/30' : 'bg-white dark:bg-black/20 border-neutral-200 dark:border-neutral-800'}`}>
+          <div className="flex justify-between items-start">
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <Cloud size={20} className={activeSource === 'imagekit' ? 'text-blue-500' : 'text-neutral-400'} />
+                <h2 className="text-xl font-black dark:text-white uppercase tracking-tighter">Direct Upload</h2>
+              </div>
+              <p className="text-xs text-neutral-500">Upload a PDF directly to ImageKit.</p>
             </div>
-            <div className="flex-1 min-w-0">
-              <p className="font-black dark:text-white text-sm mb-0.5">Portfolio Resume (PDF)</p>
-              <p className="text-[10px] text-emerald-600 font-black uppercase tracking-widest flex items-center gap-1.5">
-                <CheckCircle2 size={10} /> Live · Downloadable by visitors
-              </p>
-            </div>
-            <div className="flex gap-2">
-              <a href={resumeURL} target="_blank" rel="noopener noreferrer"
-                className="p-3 bg-blue-500/10 text-blue-600 rounded-2xl hover:bg-blue-500/20 transition-all"
-                title="Preview in browser"
+            {uploadedUrl && (
+              <button 
+                onClick={() => handleSetActive('imagekit')}
+                disabled={activeSource === 'imagekit'}
+                className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${activeSource === 'imagekit' ? 'bg-blue-600 text-white' : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-500 hover:bg-neutral-200 dark:hover:bg-neutral-700'}`}
               >
-                <ExternalLink size={18} />
-              </a>
-              <button onClick={handleDelete} disabled={deleting}
-                className="p-3 bg-red-500/10 text-red-500 rounded-2xl hover:bg-red-500/20 transition-all disabled:opacity-50"
-                title="Remove resume"
-              >
-                {deleting ? <Loader2 size={18} className="animate-spin" /> : <Trash2 size={18} />}
+                {activeSource === 'imagekit' ? 'Active Source' : 'Set Active'}
               </button>
-            </div>
+            )}
           </div>
-        ) : (
-          <div className="p-6 bg-red-500/5 border border-red-500/20 rounded-3xl flex items-center gap-4">
-            <AlertCircle size={24} className="text-red-500 shrink-0" />
-            <p className="text-sm font-bold text-neutral-500 dark:text-neutral-400">
-              No resume uploaded. Visitors will see a disabled download button on your portfolio.
-            </p>
-          </div>
-        )}
 
-        {/* Upload area */}
-        <div
-          onClick={() => !uploading && fileInputRef.current?.click()}
-          className={`relative border-2 border-dashed rounded-3xl p-10 text-center transition-all cursor-pointer
-            ${uploading ? "border-blue-500 bg-blue-500/5" : "border-neutral-300 dark:border-neutral-700 hover:border-blue-500 hover:bg-blue-500/5"}`}
-        >
-          <input ref={fileInputRef} type="file" accept=".pdf" className="hidden" onChange={handleFileChange} />
-          {uploading ? (
-            <div className="space-y-4">
-              <Loader2 size={40} className="mx-auto text-blue-600 animate-spin" />
-              <p className="text-sm font-black text-blue-600">Uploading... {uploadProgress}%</p>
-              <div className="w-full max-w-xs mx-auto h-2 bg-neutral-100 dark:bg-neutral-800 rounded-full overflow-hidden">
-                <motion.div className="h-full bg-blue-600 rounded-full" animate={{ width: `${uploadProgress}%` }} transition={{ duration: 0.3 }} />
+          {uploadedUrl ? (
+            <div className="flex items-center gap-4 p-4 bg-neutral-50 dark:bg-neutral-900 border border-neutral-100 dark:border-neutral-800 rounded-3xl">
+              <div className="w-12 h-12 bg-blue-500/10 rounded-2xl flex items-center justify-center shrink-0">
+                <FileText size={24} className="text-blue-600" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-black dark:text-white text-sm truncate">Uploaded Resume (PDF)</p>
+              </div>
+              <div className="flex gap-2">
+                <a href={uploadedUrl} target="_blank" rel="noopener noreferrer"
+                  className="p-3 bg-neutral-200/50 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 rounded-xl hover:bg-neutral-300 dark:hover:bg-neutral-700 transition-all"
+                  title="Preview in browser"
+                >
+                  <ExternalLink size={16} />
+                </a>
+                <button onClick={handleDeleteUploaded} disabled={deletingUploaded}
+                  className="p-3 bg-red-500/10 text-red-500 rounded-xl hover:bg-red-500/20 transition-all disabled:opacity-50"
+                  title="Remove uploaded resume"
+                >
+                  {deletingUploaded ? <Loader2 size={16} className="animate-spin" /> : <Trash2 size={16} />}
+                </button>
               </div>
             </div>
           ) : (
-            <>
-              <Upload size={40} className="mx-auto text-neutral-400 mb-4" />
-              <p className="font-black dark:text-white mb-1">{resumeURL ? "Replace File" : "Upload Resume File"}</p>
-              <p className="text-xs text-neutral-500">Click to choose a PDF · Max 10MB</p>
-            </>
+            <div className="p-4 bg-red-500/5 border border-red-500/10 rounded-3xl flex items-center gap-3">
+              <AlertCircle size={18} className="text-red-500 shrink-0" />
+              <p className="text-xs font-bold text-neutral-500 dark:text-neutral-400">No direct upload available.</p>
+            </div>
+          )}
+
+          <div
+            onClick={() => !uploading && fileInputRef.current?.click()}
+            className={`relative border-2 border-dashed rounded-3xl p-8 text-center transition-all cursor-pointer
+              ${uploading ? "border-blue-500 bg-blue-500/5" : "border-neutral-300 dark:border-neutral-700 hover:border-blue-500 hover:bg-blue-500/5"}`}
+          >
+            <input ref={fileInputRef} type="file" accept=".pdf" className="hidden" onChange={handleFileChange} />
+            {uploading ? (
+              <div className="space-y-3">
+                <Loader2 size={32} className="mx-auto text-blue-600 animate-spin" />
+                <p className="text-xs font-black text-blue-600">Uploading... {uploadProgress}%</p>
+                <div className="w-full max-w-[200px] mx-auto h-1.5 bg-neutral-100 dark:bg-neutral-800 rounded-full overflow-hidden">
+                  <motion.div className="h-full bg-blue-600 rounded-full" animate={{ width: `${uploadProgress}%` }} transition={{ duration: 0.3 }} />
+                </div>
+              </div>
+            ) : (
+              <>
+                <Upload size={32} className="mx-auto text-neutral-400 mb-3" />
+                <p className="text-sm font-black dark:text-white mb-1">{uploadedUrl ? "Replace File" : "Upload New PDF"}</p>
+              </>
+            )}
+          </div>
+
+          {uploadedUrl && (
+            <div className="w-full h-[400px] mt-6 rounded-3xl overflow-hidden border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900">
+              <iframe src={uploadedUrl} className="w-full h-full" title="ImageKit Preview" />
+            </div>
           )}
         </div>
 
-        <div className="pt-6 border-t border-neutral-100 dark:border-neutral-800">
-          <label className="text-[10px] font-black text-neutral-400 uppercase tracking-widest ml-1 mb-2 block">Or use Google Drive Link</label>
-          <div className="flex gap-3">
+        {/* Source 2: Google Drive */}
+        <div className={`p-8 backdrop-blur-xl border-2 rounded-[40px] shadow-sm space-y-6 transition-all ${activeSource === 'drive' ? 'bg-amber-500/5 border-amber-500/30' : 'bg-white dark:bg-black/20 border-neutral-200 dark:border-neutral-800'}`}>
+          <div className="flex justify-between items-start">
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <HardDrive size={20} className={activeSource === 'drive' ? 'text-amber-500' : 'text-neutral-400'} />
+                <h2 className="text-xl font-black dark:text-white uppercase tracking-tighter">Google Drive</h2>
+              </div>
+              <p className="text-xs text-neutral-500">Link a Google Drive or Docs file.</p>
+            </div>
+            {driveUrl && (
+              <button 
+                onClick={() => handleSetActive('drive')}
+                disabled={activeSource === 'drive'}
+                className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${activeSource === 'drive' ? 'bg-amber-500 text-white' : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-500 hover:bg-neutral-200 dark:hover:bg-neutral-700'}`}
+              >
+                {activeSource === 'drive' ? 'Active Source' : 'Set Active'}
+              </button>
+            )}
+          </div>
+
+          {driveUrl ? (
+            <div className="flex items-center gap-4 p-4 bg-neutral-50 dark:bg-neutral-900 border border-neutral-100 dark:border-neutral-800 rounded-3xl">
+              <div className="w-12 h-12 bg-amber-500/10 rounded-2xl flex items-center justify-center shrink-0">
+                <FileText size={24} className="text-amber-500" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-black dark:text-white text-sm truncate">Drive Resume Link</p>
+              </div>
+              <div className="flex gap-2">
+                <a href={driveUrl} target="_blank" rel="noopener noreferrer"
+                  className="p-3 bg-neutral-200/50 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 rounded-xl hover:bg-neutral-300 dark:hover:bg-neutral-700 transition-all"
+                  title="Preview in browser"
+                >
+                  <ExternalLink size={16} />
+                </a>
+                <button onClick={handleClearDrive}
+                  className="p-3 bg-red-500/10 text-red-500 rounded-xl hover:bg-red-500/20 transition-all"
+                  title="Clear Drive link"
+                >
+                  <Trash2 size={16} />
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="p-4 bg-red-500/5 border border-red-500/10 rounded-3xl flex items-center gap-3">
+              <AlertCircle size={18} className="text-red-500 shrink-0" />
+              <p className="text-xs font-bold text-neutral-500 dark:text-neutral-400">No Drive link saved.</p>
+            </div>
+          )}
+               <div className="flex gap-2">
             <input 
-              value={driveURL}
-              onChange={(e) => setDriveURL(e.target.value)}
+              value={driveUrl}
+              onChange={(e) => setDriveUrl(e.target.value)}
               placeholder="https://drive.google.com/..."
-              className="flex-1 px-6 py-4 rounded-2xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 focus:border-blue-500 outline-none transition-all text-sm font-bold dark:text-white"
+              className="flex-1 px-5 py-5 rounded-2xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 focus:border-amber-500 outline-none transition-all text-xs font-bold dark:text-white"
             />
             <button 
               onClick={handleSaveDriveLink}
-              disabled={savingDrive}
-              className="px-8 py-4 bg-zinc-900 dark:bg-white text-white dark:text-black rounded-2xl font-bold text-sm hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50"
+              disabled={savingDrive || !driveUrl}
+              className="px-6 py-5 bg-zinc-900 dark:bg-white text-white dark:text-black rounded-2xl font-bold text-xs hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50"
             >
-              {savingDrive ? <Loader2 size={18} className="animate-spin" /> : "Save Link"}
+              {savingDrive ? <Loader2 size={16} className="animate-spin" /> : "Save"}
             </button>
           </div>
-          <p className="text-[10px] text-neutral-500 mt-2 ml-1">Note: Link will be used if no file is uploaded.</p>
+
+          {drivePreviewUrl && (
+            <div className="w-full h-[400px] mt-6 rounded-3xl overflow-hidden border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900">
+              <iframe src={drivePreviewUrl} className="w-full h-full" title="Drive Preview" />
+            </div>
+          )}
+          
         </div>
       </div>
 

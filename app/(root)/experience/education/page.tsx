@@ -1,7 +1,7 @@
-"use client";
+﻿"use client";
 
 import React from "react";
-import { PageWrapper } from "../../../../../portfolio/components/PageWrapper";
+import { PageWrapper } from "@/components/PageWrapper";
 import { motion } from "framer-motion";
 import { GraduationCap, School, BookOpen, Calendar, MapPin, Trophy, Award, HeartHandshake } from "lucide-react";
 import { EDUCATION_DATA as MOCK_EDUCATION_DATA, LICENSE_DATA, EXTRACURRICULAR_DATA } from "../../../../data/mockData";

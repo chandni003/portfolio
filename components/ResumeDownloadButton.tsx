@@ -1,4 +1,4 @@
-// "use client";
+﻿// "use client";
 
 // import React, { useState, useEffect } from "react";
 // import { Download, FileText, Loader2 } from "lucide-react";
@@ -30,7 +30,7 @@
 //     trackResumeDownload({
 //       userAgent: navigator.userAgent,
 //       referrer: document.referrer || "direct",
-//     }).catch(() => {}); // Silent fail — don't block download
+//     }).catch(() => {}); // Silent fail â€” don't block download
 
 //     // Trigger download
 //     const link = document.createElement("a");
@@ -54,7 +54,7 @@
 //     );
 //   }
 
-//   if (!resumeURL) return null; // No resume uploaded — hide the button entirely
+//   if (!resumeURL) return null; // No resume uploaded â€” hide the button entirely
 
 //   const baseStyles = "group relative inline-flex items-center gap-2.5 px-8 py-4 rounded-2xl font-bold text-sm transition-all hover:scale-105 active:scale-95 select-none cursor-pointer";
 

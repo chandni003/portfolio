@@ -1,7 +1,7 @@
-"use client";
+﻿"use client";
 
 import React from "react";
-import { PageWrapper } from "../../../../portfolio/components/PageWrapper";
+import { PageWrapper } from "@/components/PageWrapper";
 import { motion } from "framer-motion";
 import { Code2, Layout, Database, Bot, CheckCircle2 } from "lucide-react";
 

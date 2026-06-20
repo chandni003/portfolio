@@ -1,11 +1,11 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useMemo } from "react";
-import { PageWrapper } from "../../../../portfolio/components/PageWrapper";
+import { PageWrapper } from "@/components/PageWrapper";
 import { motion, AnimatePresence } from "framer-motion";
 import { Send, Calendar, Clock, CheckCircle2, Sparkles, X, Mail, MapPin, MessageSquare, Linkedin, Github, Twitter, ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
-import { addDocument, COLLECTIONS } from "../../../../portfolio/lib/firestore";
+import { addDocument, COLLECTIONS } from "@/lib/firestore";
 import { serverTimestamp } from "firebase/firestore";
 
 const TIME_SLOTS = ["09:00 AM", "10:30 AM", "12:00 PM", "01:30 PM", "03:00 PM", "04:30 PM","06:30"];
@@ -320,7 +320,7 @@ export default function ContactPage() {
                   <div className="mb-4 px-4 py-3 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-[11px] font-bold text-blue-600 flex items-center gap-2">
                     <Calendar size={14} />
                     {selectedDate ? selectedDate.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }) : "Select a date"}
-                    {selectedTime && <><span className="text-blue-400">•</span> {selectedTime}</>}
+                    {selectedTime && <><span className="text-blue-400">â€¢</span> {selectedTime}</>}
                   </div>
                 )}
 
@@ -339,7 +339,7 @@ export default function ContactPage() {
         </section>
       </PageWrapper>
 
-      {/* ── Popups rendered OUTSIDE PageWrapper to escape overflow-hidden ── */}
+      {/* â”€â”€ Popups rendered OUTSIDE PageWrapper to escape overflow-hidden â”€â”€ */}
 
       {/* Contact form success popup */}
       <AnimatePresence>

@@ -1,8 +1,8 @@
-"use client";
+﻿"use client";
 
 import React, { useState } from "react";
 import { Bell, Search, User } from "lucide-react";
-import { Logo } from "../../../portfolio/components/Logo";
+import { Logo } from "@/components/Logo";
 
 export const TopBar = () => {
     const [notifications] = useState([

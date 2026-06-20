@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React from "react";
 import Link from "next/link";
@@ -14,11 +14,11 @@ import {
   X,
   FileText
 } from "lucide-react";
-import { cn } from "../../../portfolio/lib/utils";
-import { auth } from "../../../portfolio/lib/firebase";
+import { cn } from "@/lib/utils";
+import { auth } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
 
-import { Logo } from "../../../portfolio/components/Logo";
+import { Logo } from "@/components/Logo";
 
 const navItems = [
   { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },

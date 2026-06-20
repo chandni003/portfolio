@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React from "react";
 import { motion } from "framer-motion";
@@ -84,7 +84,7 @@ export const Footer = () => {
                 <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-neutral-200 dark:via-neutral-800 to-transparent mb-12" />
                 
                 <div className="flex flex-col md:flex-row items-center justify-between gap-6 text-xs font-bold text-neutral-400 uppercase tracking-[0.2em] text-center">
-                    <p>© 2026 Chandani Kumari. All Rights Reserved.</p>
+                    <p>Â© 2026 Chandani Kumari. All Rights Reserved.</p>
                     <button 
                         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
                         className="flex items-center gap-2 hover:text-blue-600 transition-colors group"
@@ -92,7 +92,7 @@ export const Footer = () => {
                         Back to Top
                         <ArrowUp size={14} className="group-hover:-translate-y-1 transition-transform" />
                     </button>
-                    <p>Designed with <span className="text-blue-600">♥</span></p>
+                    <p>Designed with <span className="text-blue-600">â™¥</span></p>
                 </div>
             </div>
         </footer>

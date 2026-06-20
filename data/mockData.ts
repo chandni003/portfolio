@@ -1,4 +1,4 @@
-
+﻿
 
 export const PERSONAL_VALUES = [
   {

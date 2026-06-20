@@ -1,8 +1,8 @@
-import React from "react";
-import Navbar from "../../../portfolio/components/Navbar";
-import { Logo } from "../../../portfolio/components/Logo";
-import { Footer } from "../../../portfolio/components/Footer";
-import { CallToAction } from "../../../portfolio/components/CallToAction";
+﻿import React from "react";
+import Navbar from "@/components/Navbar";
+import { Logo } from "@/components/Logo";
+import { Footer } from "@/components/Footer";
+import { CallToAction } from "@/components/CallToAction";
 
 export default function RootWebsiteLayout({
   children,

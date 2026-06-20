@@ -1,11 +1,11 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useEffect } from "react";
-import { PageWrapper } from "../../../../portfolio/components/PageWrapper";
+import { PageWrapper } from "@/components/PageWrapper";
 import { motion, AnimatePresence } from "framer-motion";
 import { ExternalLink, Globe, Hourglass } from "lucide-react";
 import Link from "next/link";
-import { subscribeToCollection, COLLECTIONS } from "../../../../portfolio/lib/firestore";
+import { subscribeToCollection, COLLECTIONS } from "@/lib/firestore";
 
 export default function ProjectsPage() {
   const [projects, setProjects] = useState<any[]>([]);

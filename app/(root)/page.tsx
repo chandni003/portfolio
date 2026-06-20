@@ -1,14 +1,14 @@
-"use client";
+﻿"use client";
 
 import { motion } from "framer-motion";
 import { Send, ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { KnowledgeSection } from "../../../portfolio/components/KnowledgeSection";
-import { AboutSection } from "../../../portfolio/components/AboutSection";
-import { ContactSection } from "../../../portfolio/components/ContactSection";
-import { Footer } from "../../../portfolio/components/Footer";
-import { ResumeDownloadButton } from "../../../portfolio/components/DownloadResumeButton";
-// import { ResumeDownloadButton } from "../../../portfolio/components/ResumeDownloadButton";
+import { KnowledgeSection } from "@/components/KnowledgeSection";
+import { AboutSection } from "@/components/AboutSection";
+import { ContactSection } from "@/components/ContactSection";
+import { Footer } from "@/components/Footer";
+import { ResumeDownloadButton } from "@/components/DownloadResumeButton";
+// import { ResumeDownloadButton } from "@/components/ResumeDownloadButton";
 
 export default function Home() {
     return (

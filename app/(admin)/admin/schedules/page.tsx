@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
@@ -114,7 +114,7 @@ export default function SchedulesManager() {
               <div className="flex flex-col items-center justify-center px-6 py-4 bg-blue-600/10 border border-blue-500/20 rounded-2xl min-w-[90px] text-center shrink-0">
                 <Calendar size={16} className="text-blue-600 mb-1" />
                 <p className="text-[10px] font-black uppercase tracking-widest text-blue-600 leading-none">
-                  {meeting.date || "—"}
+                  {meeting.date || "â€”"}
                 </p>
               </div>
 
@@ -131,11 +131,11 @@ export default function SchedulesManager() {
                 <div className="flex flex-wrap gap-4">
                   <div className="flex items-center gap-2 text-xs font-bold text-neutral-500">
                     <Clock size={13} className="text-blue-500" />
-                    {meeting.time || "—"}
+                    {meeting.time || "â€”"}
                   </div>
                   <div className="flex items-center gap-2 text-xs font-bold text-neutral-500">
                     <Mail size={13} className="text-blue-500" />
-                    {meeting.email || "—"}
+                    {meeting.email || "â€”"}
                   </div>
                 </div>
               </div>

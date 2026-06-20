@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { motion } from "framer-motion";
 import { PhoneCall, Mail, Calendar } from "lucide-react";
@@ -31,7 +31,7 @@ export const CallToAction = () => {
                             Let&apos;s Build Something Amazing Together
                         </h2>
                         <p className="text-gray-300 max-w-2xl mx-auto text-sm md:text-base leading-relaxed mb-10 font-medium">
-                            Whether you&apos;re launching a startup, revamping an existing product, or need a powerful digital presence — I&apos;ll help transform your vision into reality with clean, efficient, and scalable solutions.
+                            Whether you&apos;re launching a startup, revamping an existing product, or need a powerful digital presence â€” I&apos;ll help transform your vision into reality with clean, efficient, and scalable solutions.
                         </p>
 
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">

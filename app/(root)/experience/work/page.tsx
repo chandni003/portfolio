@@ -1,7 +1,7 @@
-"use client";
+﻿"use client";
 
 import React from "react";
-import { PageWrapper } from "../../../../../portfolio/components/PageWrapper";
+import { PageWrapper } from "@/components/PageWrapper";
 import { motion } from "framer-motion";
 import { Briefcase, Trophy, Users } from "lucide-react";
 
@@ -69,7 +69,7 @@ export default function WorkPage() {
                                     <h3 className="text-2xl font-bold text-white tracking-tight">{exp.role}</h3>
                                     <span className="px-3 py-1 bg-[#1e293b] text-[#60a5fa] text-xs font-bold rounded-full border border-blue-500/20">{exp.period}</span>
                                 </div>
-                                <p className="text-blue-500 font-semibold mb-6 text-sm">{exp.company} • {exp.location}</p>
+                                <p className="text-blue-500 font-semibold mb-6 text-sm">{exp.company} â€¢ {exp.location}</p>
                                 <ul className="space-y-3">
                                     <li className="flex items-start gap-3">
                                         <div className="w-1.5 h-1.5 rounded-full bg-blue-500 mt-2 flex-shrink-0 shadow-[0_0_8px_rgba(59,130,246,0.8)]" />
@@ -116,7 +116,7 @@ export default function WorkPage() {
                                         <p className="text-gray-200 font-semibold text-sm leading-relaxed">
                                             {award.description}
                                         </p>
-                                        <p className="text-yellow-500 text-xs font-bold mt-2">{award.year} • {award.title}</p>
+                                        <p className="text-yellow-500 text-xs font-bold mt-2">{award.year} â€¢ {award.title}</p>
                                     </div>
                                 </motion.div>
                             ))}

@@ -1,29 +1,4 @@
-export const KNOWLEDGE_DATA = [
-  // Languages
-  { name: "C", proficiency: 85, icon: "Code", category: "Languages" },
-  { name: "C++", proficiency: 80, icon: "Cpu", category: "Languages" },
-  { name: "Python", proficiency: 75, icon: "Bug", category: "Languages" },
-  { name: "JavaScript", proficiency: 90, icon: "Zap", category: "Languages" },
-  { name: "TypeScript", proficiency: 85, icon: "ShieldCheck", category: "Languages" },
 
-  // Frontend
-  { name: "React", proficiency: 95, icon: "Layout", category: "Frontend" },
-  { name: "Next.js", proficiency: 92, icon: "Globe", category: "Frontend" },
-  { name: "Tailwind CSS", proficiency: 90, icon: "Palette", category: "Frontend" },
-  { name: "HTML5", proficiency: 98, icon: "FileCode", category: "Frontend" },
-  { name: "CSS3", proficiency: 95, icon: "Brush", category: "Frontend" },
-
-  // Backend & DB
-  { name: "Node.js", proficiency: 88, icon: "Server", category: "Backend & DB" },
-  { name: "Express.js", proficiency: 85, icon: "Activity", category: "Backend & DB" },
-  { name: "MongoDB", proficiency: 82, icon: "Database", category: "Backend & DB" },
-  { name: "PostgreSQL", proficiency: 75, icon: "Database", category: "Backend & DB" },
-
-  // AI & Automation
-  { name: "AI Automation", proficiency: 85, icon: "Bot", category: "AI & Automation" },
-  { name: "Gemini AI", proficiency: 90, icon: "Sparkles", category: "AI & Automation" },
-  { name: "Workflow Automation", proficiency: 80, icon: "Workflow", category: "AI & Automation" },
-];
 
 export const PERSONAL_VALUES = [
   {
